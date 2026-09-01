@@ -1,9 +1,5 @@
 # ToolTrack
 
-Projeto desenvolvido com [Vue 3](https://vuejs.org/) e [Vite](https://vitejs.dev/).
-
-## 🚀 Como executar o projeto
-
 ```bash
 # Instalar dependências
 npm install
