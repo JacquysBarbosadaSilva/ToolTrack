@@ -41,17 +41,6 @@
         </div>
 
         <form class="login-form" @submit.prevent="handleLogin">
-          <!-- Campo Nome -->
-          <InputField
-            id="nome"
-            v-model="credentials.name"
-            placeholder="Nome"
-            icon="user"
-            type="text"
-            required
-            :disabled="isLoading"
-          />
-
           <!-- Campo Email -->
           <InputField
             id="email"
@@ -94,19 +83,21 @@
 
 <script setup>
 import { storeToRefs } from 'pinia'
-import { useAuthStore } from '../stores/authStore'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
 import InputField from '../components/InputField.vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const { credentials, isLoading, error } = storeToRefs(authStore)
 
 /**
- * Dispara a ação de login na store do Pinia.
- * A função na store está pronta e vazia, aguardando o back-end real.
+ * Dispara a ação de login na store do Pinia e redireciona para o dashboard.
  */
 async function handleLogin() {
   try {
     await authStore.login(credentials.value)
+    router.push('/')
   } catch (err) {
     console.error('Falha no login:', err)
   }
