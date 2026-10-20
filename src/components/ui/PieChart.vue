@@ -1,6 +1,6 @@
 <template>
   <AppCard>
-    <!-- Título no topo como no Figma -->
+
     <template #header>
       <div class="w-full">
         <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
@@ -12,7 +12,6 @@
       </div>
     </template>
 
-    <!-- Estado Loading -->
     <div v-if="loading" class="flex items-center justify-center py-8">
       <div class="flex items-center gap-8 w-full max-w-sm justify-center">
         <SkeletonBlock class="w-40 h-40 rounded-full" />
@@ -24,22 +23,19 @@
       </div>
     </div>
 
-    <!-- Estado Error -->
     <div v-else-if="error" class="py-6">
       <ErrorState :message="error" @retry="$emit('retry')" />
     </div>
 
-    <!-- Estado Empty -->
     <div v-else-if="!computedSlices || computedSlices.length === 0" class="py-6">
       <EmptyState title="Nenhum registro encontrado" />
     </div>
 
-    <!-- Gráfico SVG de Pizza (Setores Cheios, sem furo) + Legenda à direita como no Figma -->
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 items-center gap-6 py-2">
-      <!-- SVG Pizza Nativo -->
+
       <div class="flex items-center justify-center">
         <svg viewBox="0 0 200 200" class="w-48 h-48 select-none">
-          <!-- Fallback quando sem dados -->
+
           <circle
             v-if="!computedSlices.length"
             cx="100"
@@ -48,7 +44,6 @@
             fill="#E2E8F0"
           />
 
-          <!-- Caso especial: fatia única de 100% -->
           <circle
             v-else-if="computedSlices.length === 1"
             cx="100"
@@ -58,7 +53,6 @@
             class="transition-opacity hover:opacity-90"
           />
 
-          <!-- Fatias calculadas em SVG Path (setores cheios sem furo central) -->
           <g v-else>
             <path
               v-for="slice in computedSlices"
@@ -73,7 +67,6 @@
         </svg>
       </div>
 
-      <!-- Legenda à direita: Ponto de cor + Nome e Percentual juntos na linha (Figma) -->
       <div class="space-y-3">
         <div
           v-for="item in computedSlices"
@@ -149,7 +142,7 @@ const computedSlices = computed<ComputedSlice[]>(() => {
   const cx = 100
   const cy = 100
   const r = 80
-  let currentAngle = -Math.PI / 2 // Começa no topo (-90 graus)
+  let currentAngle = -Math.PI / 2
 
   return props.data.map((item, index) => {
     const val = Number(item.value) || 0
@@ -163,7 +156,6 @@ const computedSlices = computed<ComputedSlice[]>(() => {
 
     const largeArcFlag = sliceAngle > Math.PI ? 1 : 0
 
-    // Setor cheio terminando no centro (cx, cy) sem furo
     const path = `M ${cx} ${cy} L ${x1.toFixed(3)} ${y1.toFixed(3)} A ${r} ${r} 0 ${largeArcFlag} 1 ${x2.toFixed(3)} ${y2.toFixed(3)} Z`
 
     currentAngle = endAngle

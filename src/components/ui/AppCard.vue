@@ -5,7 +5,7 @@
       cardClass
     ]"
   >
-    <!-- Slot ou Cabeçalho Padrão -->
+
     <header
       v-if="$slots.header || title"
       class="px-5 sm:px-6 py-4 sm:py-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
@@ -26,12 +26,10 @@
       </slot>
     </header>
 
-    <!-- Conteúdo do Card -->
     <div :class="noPadding ? '' : (paddingClass || 'p-5 sm:p-6')">
       <slot />
     </div>
 
-    <!-- Rodapé Opcional -->
     <footer
       v-if="$slots.footer"
       class="px-5 sm:px-6 py-3 border-t border-slate-100 bg-slate-50/50 rounded-b-xl"

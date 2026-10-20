@@ -1,8 +1,8 @@
 <template>
   <div class="input-pill-wrapper" :class="{ 'is-focused': isFocused, 'has-error': hasError }">
-    <!-- Icon Container -->
+
     <div class="icon-slot">
-      <!-- User / Profile Icon -->
+
       <svg
         v-if="icon === 'user'"
         class="input-icon"
@@ -13,7 +13,6 @@
         <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8V21.6h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
       </svg>
 
-      <!-- Email / Mail Icon -->
       <svg
         v-else-if="icon === 'email'"
         class="input-icon"
@@ -24,7 +23,6 @@
         <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
       </svg>
 
-      <!-- Password / Lock Icon -->
       <svg
         v-else-if="icon === 'lock'"
         class="input-icon"
@@ -36,7 +34,6 @@
       </svg>
     </div>
 
-    <!-- HTML Input -->
     <input
       :id="id"
       :type="type"
@@ -75,7 +72,7 @@ defineProps({
   },
   icon: {
     type: String,
-    default: 'user' // 'user' | 'email' | 'lock'
+    default: 'user'
   },
   required: {
     type: Boolean,

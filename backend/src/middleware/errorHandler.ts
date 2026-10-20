@@ -29,7 +29,6 @@ export function errorHandler(
 ) {
   const errName = err?.name || err?.Code || err?.__type || "";
 
-  // 1. Mapeamento de credenciais AWS Academy expiradas ou inválidas -> 503
   if (AWS_AUTH_ERRORS.has(errName)) {
     return res.status(503).json({
       code: "AWS_CREDENTIALS_EXPIRED",
@@ -38,7 +37,6 @@ export function errorHandler(
     });
   }
 
-  // 2. Erros de validação do Zod -> 400
   if (err instanceof ZodError) {
     const message =
       err.errors
@@ -51,7 +49,6 @@ export function errorHandler(
     });
   }
 
-  // 3. Erros controlados da aplicação (AppError)
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       code: err.code,
@@ -59,7 +56,6 @@ export function errorHandler(
     });
   }
 
-  // 4. Demais erros internos
   console.error("[ErrorHandler]", err);
   const status = typeof err.statusCode === "number" ? err.statusCode : 500;
   return res.status(status).json({

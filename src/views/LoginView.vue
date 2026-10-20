@@ -1,24 +1,22 @@
 <template>
   <div class="login-page">
-    <!-- Formas geométricas de fundo (conforme screenshot) -->
+
     <div class="bg-shape bg-shape-top-right" aria-hidden="true"></div>
     <div class="bg-shape bg-shape-bottom-left" aria-hidden="true"></div>
 
-    <!-- Card Principal de Login -->
     <main class="login-card">
-      <!-- Painel Esquerdo: Boas-vindas e Marca ToolTrack -->
+
       <section class="card-left-panel">
         <h2 class="welcome-heading">Bem-vindo de volta!</h2>
 
         <div class="logo-container relative w-full max-w-[280px] aspect-square flex items-center justify-center">
-          <!-- Logo ToolTrack (Caixa com disco e borda branca) -->
+
           <img
             src="@/assets/logo-borda-branca.png"
             alt="Logo ToolTrack"
             class="object-cover w-full h-full select-none"
           />
 
-          <!-- Nome ToolTrack (Texto com borda) -->
           <img
             src="@/assets/texto-branco.png"
             alt="ToolTrack"
@@ -26,22 +24,19 @@
           />
         </div>
 
-        <!-- Espaçador para equilíbrio estético -->
         <div class="left-spacer" aria-hidden="true"></div>
       </section>
 
-      <!-- Painel Direito: Formulário de Login -->
       <section class="card-right-panel">
         <h1 class="login-title">Login</h1>
 
-        <!-- Mensagem de erro caso a action retorne falha futura -->
         <div v-if="error" class="error-banner" role="alert">
           <span>{{ error }}</span>
           <button type="button" class="btn-clear-error" @click="authStore.clearError">✕</button>
         </div>
 
         <form class="login-form" @submit.prevent="handleLogin">
-          <!-- Campo Email -->
+
           <InputField
             id="email"
             v-model="credentials.email"
@@ -52,7 +47,6 @@
             :disabled="isLoading"
           />
 
-          <!-- Campo Senha -->
           <InputField
             id="senha"
             v-model="credentials.password"
@@ -63,7 +57,6 @@
             :disabled="isLoading"
           />
 
-          <!-- Botão Entrar -->
           <div class="btn-wrapper">
             <button
               type="submit"
@@ -91,9 +84,6 @@ const router = useRouter()
 const authStore = useAuthStore()
 const { credentials, isLoading, error } = storeToRefs(authStore)
 
-/**
- * Dispara a ação de login na store do Pinia e redireciona para o dashboard.
- */
 async function handleLogin() {
   try {
     await authStore.login(credentials.value)
@@ -105,7 +95,7 @@ async function handleLogin() {
 </script>
 
 <style scoped>
-/* Container Geral da Página */
+
 .login-page {
   position: relative;
   width: 100vw;
@@ -120,7 +110,6 @@ async function handleLogin() {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Formas Abstratas de Fundo (Conforme o layout fornecido) */
 .bg-shape {
   position: absolute;
   border-radius: 50%;
@@ -144,7 +133,6 @@ async function handleLogin() {
   left: -120px;
 }
 
-/* Card Principal */
 .login-card {
   position: relative;
   z-index: 2;
@@ -157,7 +145,6 @@ async function handleLogin() {
   border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-/* Painel Esquerdo (Azul Marinho) */
 .card-left-panel {
   flex: 0 0 42%;
   background-color: #121634;
@@ -196,7 +183,6 @@ async function handleLogin() {
   width: 100%;
 }
 
-/* Painel Direito (Branco) */
 .card-right-panel {
   flex: 1;
   background-color: #ffffff;
@@ -217,7 +203,6 @@ async function handleLogin() {
   text-align: center;
 }
 
-/* Formulário */
 .login-form {
   width: 100%;
   max-width: 310px;
@@ -226,7 +211,6 @@ async function handleLogin() {
   gap: 16px;
 }
 
-/* Botão Entrar com anel externo (conforme screenshot) */
 .btn-wrapper {
   display: flex;
   justify-content: center;
@@ -267,7 +251,6 @@ async function handleLogin() {
   cursor: not-allowed;
 }
 
-/* Spinner animado no botão */
 .loader-spinner {
   width: 16px;
   height: 16px;
@@ -283,7 +266,6 @@ async function handleLogin() {
   }
 }
 
-/* Banner de Erro */
 .error-banner {
   width: 100%;
   max-width: 310px;
@@ -308,7 +290,6 @@ async function handleLogin() {
   padding: 0 4px;
 }
 
-/* Responsividade para telas menores */
 @media (max-width: 768px) {
   .login-card {
     flex-direction: column;

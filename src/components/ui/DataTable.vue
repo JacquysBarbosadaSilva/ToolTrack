@@ -1,6 +1,6 @@
 <template>
   <AppCard :no-padding="true">
-    <!-- Cabeçalho da Tabela com título, ícone e ações opcionais -->
+
     <template #header v-if="title || $slots.header || $slots.actions">
       <slot name="header">
         <div>
@@ -18,10 +18,9 @@
       </slot>
     </template>
 
-    <!-- Tabela Responsiva com Scroll Horizontal sem quebrar layout -->
     <div class="overflow-x-auto">
       <table class="w-full table-auto border-collapse">
-        <!-- Cabeçalho das Colunas -->
+
         <thead>
           <tr class="bg-slate-50/70 border-b border-slate-200">
             <th
@@ -40,9 +39,8 @@
           </tr>
         </thead>
 
-        <!-- Corpo da Tabela -->
         <tbody class="divide-y divide-slate-200">
-          <!-- Estado de Carregamento (Skeleton) -->
+
           <template v-if="loading">
             <tr v-for="n in skeletonRows" :key="`skeleton-${n}`" class="h-16">
               <td
@@ -55,14 +53,12 @@
             </tr>
           </template>
 
-          <!-- Estado de Erro -->
           <tr v-else-if="error" class="h-32">
             <td :colspan="columns.length" class="text-center py-6 px-4">
               <ErrorState :message="error" @retry="$emit('retry')" />
             </td>
           </tr>
 
-          <!-- Estado Vazio -->
           <tr v-else-if="!items || items.length === 0" class="h-32">
             <td :colspan="columns.length" class="text-center py-6 px-4">
               <slot name="empty">
@@ -71,7 +67,6 @@
             </td>
           </tr>
 
-          <!-- Linhas de Dados -->
           <template v-else>
             <tr
               v-for="(item, index) in items"
@@ -102,7 +97,6 @@
       </table>
     </div>
 
-    <!-- Rodapé Opcional (ex.: Paginação) -->
     <template #footer v-if="$slots.footer">
       <slot name="footer" />
     </template>

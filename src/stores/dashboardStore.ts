@@ -13,20 +13,17 @@ import { productsService } from '@/services/products.service'
 import { lookupsService } from '@/services/lookups.service'
 
 export const useDashboardStore = defineStore('dashboard', () => {
-  // --- Estados de Carregamento & Erro ---
+
   const isLoading = ref<boolean>(false)
   const isTableLoading = ref<boolean>(false)
   const isFiltering = ref<boolean>(false)
   const error = ref<string | null>(null)
   const tableError = ref<string | null>(null)
 
-  // --- Cards de Métricas Principais (vindos da API DynamoDB) ---
   const metrics = ref<MetricCard[]>([])
 
-  // --- Card Acessados Recentemente ---
   const recentAccessed = ref<RecentAccessedItem[]>([])
 
-  // --- Filtros do Relatório ---
   const filters = reactive<DashboardFilters>({
     search: '',
     setor: '',
@@ -35,22 +32,17 @@ export const useDashboardStore = defineStore('dashboard', () => {
     data: ''
   })
 
-  // --- Dados dos Gráficos ---
   const categoryChartData = ref<CategoryChartSlice[]>([])
   const shiftChartData = ref<ShiftChartItem[]>([])
 
-  // --- Lista do Estoque ---
   const inventoryList = ref<InventoryItem[]>([])
 
-  // Listas para preenchimento dos selects (vindas de /lookups)
   const availableSectors = ref<string[]>([])
   const availableCategories = ref<string[]>([])
   const availableTurnos = ref<string[]>([])
 
-  // Timer de debounce da busca
   let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null
 
-  // --- Helper para converter dd/mm/aaaa em YYYY-MM-DD para a API ---
   function formatToIsoDate(brDate?: string): string | undefined {
     if (!brDate) return undefined
     if (/^\d{4}-\d{2}-\d{2}$/.test(brDate)) return brDate
@@ -61,7 +53,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     return brDate
   }
 
-  // --- Helper para converter YYYY-MM-DD em dd/mm/aaaa para a UI ---
   function formatToBrDate(isoDate?: string): string {
     if (!isoDate) return '-'
     const match = isoDate.match(/^(\d{4})-(\d{2})-(\d{2})/)
@@ -71,15 +62,10 @@ export const useDashboardStore = defineStore('dashboard', () => {
     return isoDate
   }
 
-  // --- Getters Reativos ---
   const filteredInventory = computed<InventoryItem[]>(() => {
     return inventoryList.value
   })
 
-  // --- Ações Assíncronas ---
-  /**
-   * Busca as opções de filtros na tabela lookups do DynamoDB
-   */
   async function fetchLookups(): Promise<void> {
     try {
       const data = await lookupsService.getLookups()
@@ -91,9 +77,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
   }
 
-  /**
-   * Dispara busca de produtos com debounce de 300ms a partir do campo de busca do topo
-   */
   function handleSearchInput(searchTerm: string): void {
     filters.search = searchTerm
     if (searchDebounceTimer) {
@@ -104,9 +87,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }, 300)
   }
 
-  /**
-   * Chama /products?search= e atualiza a tabela de Estoque
-   */
   async function searchProducts(searchTerm: string): Promise<void> {
     isTableLoading.value = true
     tableError.value = null
@@ -141,9 +121,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
   }
 
-  /**
-   * Carrega os dados reais do Dashboard chamando os endpoints da API
-   */
   async function fetchDashboardData(): Promise<void> {
     isLoading.value = true
     error.value = null
@@ -169,17 +146,14 @@ export const useDashboardStore = defineStore('dashboard', () => {
         fetchLookups()
       ])
 
-      // Popula métricas
       if (dashRes.kpis?.cards) {
         metrics.value = dashRes.kpis.cards
       }
 
-      // Popula gráficos
       categoryChartData.value = dashRes.categoria || []
       shiftChartData.value = dashRes.turno || []
       recentAccessed.value = dashRes.recentes || []
 
-      // Popula inventário
       if (prodRes?.items) {
         inventoryList.value = prodRes.items.map((p) => ({
           id: `ITEM#${p.sku}`,
@@ -201,9 +175,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
   }
 
-  /**
-   * Aplica filtros disparando busca na API
-   */
   async function applyFilters(): Promise<void> {
     isFiltering.value = true
     try {
@@ -213,9 +184,6 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
   }
 
-  /**
-   * Reseta filtros para os padrões e recarrega os dados
-   */
   async function resetFilters(): Promise<void> {
     filters.search = ''
     filters.setor = ''
@@ -226,7 +194,7 @@ export const useDashboardStore = defineStore('dashboard', () => {
   }
 
   return {
-    // Estados
+
     isLoading,
     isTableLoading,
     isFiltering,
@@ -241,9 +209,9 @@ export const useDashboardStore = defineStore('dashboard', () => {
     availableSectors,
     availableCategories,
     availableTurnos,
-    // Getters
+
     filteredInventory,
-    // Ações
+
     fetchLookups,
     fetchDashboardData,
     handleSearchInput,

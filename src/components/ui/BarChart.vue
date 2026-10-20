@@ -1,6 +1,6 @@
 <template>
   <AppCard>
-    <!-- Título no topo como no Figma -->
+
     <template #header>
       <div class="w-full">
         <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">
@@ -12,7 +12,6 @@
       </div>
     </template>
 
-    <!-- Estado Loading -->
     <div v-if="loading" class="py-8 flex items-center justify-center">
       <div class="flex items-end justify-center gap-8 w-full max-w-xs h-40">
         <SkeletonBlock class="w-14 h-28 rounded-t" />
@@ -21,20 +20,17 @@
       </div>
     </div>
 
-    <!-- Estado Error -->
     <div v-else-if="error" class="py-6">
       <ErrorState :message="error" @retry="$emit('retry')" />
     </div>
 
-    <!-- Estado Empty -->
     <div v-else-if="!computedBars || computedBars.length === 0 || computedBars.every(b => b.value === 0)" class="py-6">
       <EmptyState title="Nenhum registro encontrado" />
     </div>
 
-    <!-- Gráfico SVG de Barras Verticais (Figma) -->
     <div v-else class="py-2">
       <svg viewBox="0 0 380 190" class="w-full h-52 select-none">
-        <!-- Linhas de Grade de Fundo Sutis -->
+
         <g stroke="#F1F5F9" stroke-dasharray="3 3" stroke-width="1">
           <line x1="20" y1="30" x2="360" y2="30" />
           <line x1="20" y1="70" x2="360" y2="70" />
@@ -42,9 +38,8 @@
           <line x1="20" y1="150" x2="360" y2="150" stroke="#E2E8F0" stroke-dasharray="0" />
         </g>
 
-        <!-- Barras Verticais do Gráfico -->
         <g v-for="bar in computedBars" :key="bar.label" class="cursor-pointer group">
-          <!-- Valor no Topo da Barra (Figma: 12918, 7964, 14124) -->
+
           <text
             :x="bar.x + bar.width / 2"
             :y="bar.y - 8"
@@ -57,7 +52,6 @@
             {{ bar.value }}
           </text>
 
-          <!-- Barra com Cantos Arredondados -->
           <rect
             :x="bar.x"
             :y="bar.y"
@@ -70,7 +64,6 @@
             <title>{{ bar.label }}: {{ bar.value }}</title>
           </rect>
 
-          <!-- Rótulo do Turno Embaixo da Barra (Manhã, Noite, Tarde) -->
           <text
             :x="bar.x + bar.width / 2"
             y="170"

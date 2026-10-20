@@ -4,7 +4,7 @@
     :class="[topBorderClass]"
   >
     <div>
-      <!-- Topo: ID à esquerda e Badge de Status à direita -->
+
       <div class="flex items-center justify-between gap-2">
         <span class="text-[11px] font-mono font-semibold text-slate-500 uppercase tracking-wide">
           ID: {{ machine.id }}
@@ -18,12 +18,10 @@
         </span>
       </div>
 
-      <!-- Nome da Máquina / Esteira -->
       <h3 class="text-xl font-bold text-slate-900 mt-2 tracking-tight min-h-[3rem] flex items-center">
         {{ machine.name }}
       </h3>
 
-      <!-- Métricas: Produção (Hora) e Eficiência (OEE) -->
       <div class="grid grid-cols-2 gap-4 mt-3">
         <div>
           <p class="text-xs text-slate-500">
@@ -45,7 +43,6 @@
       </div>
     </div>
 
-    <!-- Rodapé: Ícone + Info Extra à esquerda, 3 pontos à direita -->
     <div class="border-t border-slate-100 pt-3 mt-4 flex items-center justify-between text-xs text-slate-500">
       <div class="flex items-center gap-1.5 min-w-0 pr-2">
         <component
@@ -56,7 +53,6 @@
         <span class="truncate">{{ machine.extraInfo }}</span>
       </div>
 
-      <!-- Ações (Editar e Excluir) -->
       <div class="flex items-center gap-1 shrink-0">
         <button
           type="button"
@@ -102,7 +98,6 @@ defineEmits<{
   (e: 'delete', machine: Machine): void
 }>()
 
-// Borda superior colorida (Figma)
 const topBorderClass = computed(() => {
   switch (props.machine.status) {
     case 'Operacional':
@@ -118,7 +113,6 @@ const topBorderClass = computed(() => {
   }
 })
 
-// Badge de status (Figma: pílula com fundo claro e texto colorido)
 const statusBadgeClass = computed(() => {
   switch (props.machine.status) {
     case 'Operacional':
@@ -134,7 +128,6 @@ const statusBadgeClass = computed(() => {
   }
 })
 
-// Ícone do rodapé baseado no status/extraInfo
 const footerIcon = computed<Component>(() => {
   switch (props.machine.status) {
     case 'Parada':

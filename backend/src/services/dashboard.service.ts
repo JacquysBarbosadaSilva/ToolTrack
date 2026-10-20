@@ -20,7 +20,6 @@ export async function getDashboard(filters: DashboardFilters = {}) {
   const today = new Date().toISOString().slice(0, 10);
   const targetDate = filters.data || today;
 
-  // 1. Produtos agregados (respeitando filtros setor, turno, categoria)
   const products = await productsRepository.scanAll({
     setor: filters.setor,
     turno: filters.turno,
@@ -32,7 +31,6 @@ export async function getDashboard(filters: DashboardFilters = {}) {
     (p) => p.status === "Baixo" || p.status === "Crítico"
   ).length;
 
-  // Distribuição por Categoria
   const categoryMap = new Map<string, number>();
   for (const product of products) {
     const cat = product.categoria || "Outros";
@@ -54,14 +52,11 @@ export async function getDashboard(filters: DashboardFilters = {}) {
     };
   });
 
-  // 2. Máquinas (ativas / total)
   const { active: activeMachines, total: totalMachines } =
     await dashboardRepository.getMachinesStats(filters.setor);
 
-  // 3. Tarefas de manutenção pendentes para a data
   const maintenanceTasks = await dashboardRepository.getPendingMaintenanceCount(targetDate);
 
-  // 4. Quantidade por turno da tabela de produção (para a data filtrada ou hoje)
   const productionRows = await dashboardRepository.getProductionByDate(targetDate, {
     setor: filters.setor,
     categoria: filters.categoria,
@@ -84,7 +79,6 @@ export async function getDashboard(filters: DashboardFilters = {}) {
 
   const totalProduction = Object.values(shiftTotals).reduce((a, b) => a + b, 0);
 
-  // Ordem visual do Figma: Manhã, Noite, Tarde
   const shiftOrder = ["Manhã", "Noite", "Tarde"];
   const turno = shiftOrder.map((shiftName) => {
     const quantidade = shiftTotals[shiftName] || 0;
@@ -101,7 +95,6 @@ export async function getDashboard(filters: DashboardFilters = {}) {
     };
   });
 
-  // 5. Variação dos KPIs comparando com o último snapshot anterior a hoje
   const [snapInventory, snapLowStock] = await Promise.all([
     dashboardRepository.getLatestSnapshot("TOTAL_INVENTORY", today),
     dashboardRepository.getLatestSnapshot("LOW_STOCK", today),
@@ -201,7 +194,6 @@ export async function getDashboard(filters: DashboardFilters = {}) {
     },
   ];
 
-  // 6. Ao final de cada leitura do dashboard, grava/atualiza o snapshot do dia
   try {
     await Promise.all([
       dashboardRepository.saveSnapshot("TOTAL_INVENTORY", today, totalItems),

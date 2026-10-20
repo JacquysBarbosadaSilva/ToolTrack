@@ -17,7 +17,6 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3001;
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
 
-// Middlewares globais
 app.use(
   cors({
     origin: [frontendUrl, "http://localhost:5173", "http://127.0.0.1:5173"],
@@ -26,7 +25,6 @@ app.use(
 );
 app.use(express.json());
 
-// Rota de saúde (healthcheck)
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
@@ -34,7 +32,6 @@ app.get("/health", (_req, res) => {
   res.json({ ok: true });
 });
 
-// Rotas da API
 app.use("/api/auth", authRoutes);
 app.use("/auth", authRoutes);
 
@@ -62,7 +59,6 @@ app.use("/export", exportRoutes);
 app.use("/api/machines", machinesRoutes);
 app.use("/machines", machinesRoutes);
 
-// Rota 404 para endpoints não encontrados
 app.use((_req, res) => {
   res.status(404).json({
     code: "NOT_FOUND",
@@ -70,10 +66,8 @@ app.use((_req, res) => {
   });
 });
 
-// Middleware centralizado de tratamento de erros
 app.use(errorHandler);
 
-// Inicialização com validação obrigatória da AWS
 async function start() {
   try {
     console.log("Validando conexão com AWS DynamoDB...");

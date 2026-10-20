@@ -10,8 +10,8 @@ import { TABLES } from "../db/tables";
 export interface ProductionEntry {
   id: string;
   turno: "Manhã" | "Tarde" | "Noite" | string;
-  data: string; // YYYY-MM-DD
-  dataId: string; // YYYY-MM-DD#uuid
+  data: string;
+  dataId: string;
   setor: string;
   categoria: string;
   quantidade: number;

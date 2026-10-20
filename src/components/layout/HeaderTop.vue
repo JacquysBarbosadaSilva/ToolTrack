@@ -1,8 +1,8 @@
 <template>
   <header class="sticky top-0 z-30 flex items-center justify-between h-16 px-4 sm:px-6 bg-white border-b border-slate-200/80 shadow-xs">
-    <!-- Left Section: Mobile Menu Button & Page Title -->
+
     <div class="flex items-center gap-3">
-      <!-- Mobile Menu Button -->
+
       <button
         type="button"
         id="btn-mobile-menu"
@@ -13,7 +13,6 @@
         <Menu class="w-6 h-6" />
       </button>
 
-      <!-- Page Title / Breadcrumb -->
       <div>
         <h1 class="text-lg sm:text-xl font-bold text-slate-800 tracking-tight">
           {{ pageTitle }}
@@ -24,15 +23,13 @@
       </div>
     </div>
 
-    <!-- Right Section: Badges & Status -->
     <div class="flex items-center gap-2 sm:gap-4">
-      <!-- Status Badge -->
+
       <div class="hidden sm:inline-flex items-center gap-2 px-3 py-1 text-xs font-medium text-emerald-700 bg-emerald-50 rounded-full border border-emerald-200/80">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         <span>Sistema Online</span>
       </div>
 
-      <!-- Quick profile info -->
       <RouterLink
         to="/perfil"
         class="flex items-center gap-2.5 p-1 sm:px-3 sm:py-1.5 rounded-xl hover:bg-slate-100 transition-colors"

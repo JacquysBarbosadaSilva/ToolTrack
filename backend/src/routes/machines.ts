@@ -34,7 +34,6 @@ const updateMachineSchema = z.object({
   setor: z.string().optional(),
 });
 
-// GET /api/machines
 router.get("/", requireAuth, async (req, res, next) => {
   try {
     const { search, status } = req.query as { search?: string; status?: string };
@@ -81,7 +80,6 @@ router.get("/", requireAuth, async (req, res, next) => {
   }
 });
 
-// POST /api/machines
 router.post("/", requireAuth, validateBody(createMachineSchema), async (req, res, next) => {
   try {
     const item = {
@@ -103,7 +101,6 @@ router.post("/", requireAuth, validateBody(createMachineSchema), async (req, res
   }
 });
 
-// PUT /api/machines/:id
 router.put("/:id", requireAuth, validateBody(updateMachineSchema), async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -139,7 +136,6 @@ router.put("/:id", requireAuth, validateBody(updateMachineSchema), async (req, r
   }
 });
 
-// DELETE /api/machines/:id
 router.delete("/:id", requireAuth, async (req, res, next) => {
   try {
     const { id } = req.params;

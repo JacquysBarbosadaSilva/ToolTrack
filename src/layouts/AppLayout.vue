@@ -1,7 +1,7 @@
 <template>
-  <!-- Layout Mestre Shell Único (Contrato Seção 4) -->
+
   <div class="flex h-screen w-full overflow-hidden bg-slate-50 font-sans text-slate-800">
-    <!-- Overlay Backdrop do Menu Mobile (apenas em telas < lg) -->
+
     <Transition
       enter-active-class="transition-opacity ease-out duration-200"
       enter-from-class="opacity-0"
@@ -18,7 +18,6 @@
       />
     </Transition>
 
-    <!-- 1. BARRA LATERAL (Sidebar 256px / w-64 shrink-0 h-screen no desktop, drawer no mobile) -->
     <aside
       :class="[
         'fixed lg:static inset-y-0 left-0 z-50 w-64 shrink-0 h-screen flex flex-col',
@@ -28,7 +27,7 @@
       ]"
       aria-label="Barra Lateral de Navegação"
     >
-      <!-- Topo: Logo Oficial (src/assets/logo-borda-branca.png) e botão fechar no mobile -->
+
       <div class="h-16 px-6 flex items-center justify-between border-b border-[#1E293B]/80 shrink-0">
         <router-link to="/" class="flex items-center gap-2.5 group focus:outline-hidden" title="ToolTrack Dashboard">
           <div class="relative flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
@@ -43,7 +42,6 @@
           </span>
         </router-link>
 
-        <!-- Botão de Fechar visível apenas em telas menores -->
         <button
           type="button"
           class="lg:hidden p-1.5 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
@@ -54,9 +52,8 @@
         </button>
       </div>
 
-      <!-- Navegação Principal (flex-1) -->
       <nav class="flex-1 px-3 py-5 space-y-1 overflow-y-auto">
-        <!-- Dashboard -->
+
         <router-link
           to="/"
           class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
@@ -67,7 +64,6 @@
           <span>Dashboard</span>
         </router-link>
 
-        <!-- Produção -->
         <router-link
           to="/producao"
           class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
@@ -78,7 +74,6 @@
           <span>Produção</span>
         </router-link>
 
-        <!-- Perfil -->
         <router-link
           to="/perfil"
           class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all"
@@ -89,7 +84,6 @@
           <span>Perfil</span>
         </router-link>
 
-        <!-- Gerenciador de Usuários (Apenas role = admin) -->
         <router-link
           v-if="authStore.isAdmin"
           to="/usuarios"
@@ -102,7 +96,6 @@
         </router-link>
       </nav>
 
-      <!-- Rodapé: Usuário logado e Logout fixo no rodapé (mt-auto, nunca cortado) -->
       <div class="p-3 border-t border-[#1E293B]/80 mt-auto shrink-0">
         <div v-if="authStore.user" class="px-3 py-2 mb-2 flex items-center gap-2.5 rounded-lg bg-white/5 text-xs text-slate-300">
           <div class="w-7 h-7 rounded-lg bg-[#0B4FB3] text-white flex items-center justify-center font-bold text-xs shrink-0">
@@ -126,9 +119,8 @@
       </div>
     </aside>
 
-    <!-- 2. ÁREA PRINCIPAL -->
     <main class="flex-1 min-w-0 h-screen overflow-y-auto flex flex-col">
-      <!-- Topbar Header Mobile (visível em telas < lg) -->
+
       <header class="lg:hidden flex items-center justify-between h-14 px-4 bg-[#111B2E] text-white border-b border-[#1E293B] shrink-0 no-print">
         <div class="flex items-center gap-3">
           <button
@@ -159,9 +151,8 @@
         </div>
       </header>
 
-      <!-- Área de Conteúdo com Scroll Próprio -->
       <div class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        <!-- Barra de busca no topo da área de conteúdo (Dashboard) -->
+
         <div v-if="$route.path === '/'" class="w-full no-print">
           <div class="relative w-full">
             <Search class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -175,7 +166,6 @@
           </div>
         </div>
 
-        <!-- Conteúdo da Rota Ativa -->
         <RouterView v-slot="{ Component }">
           <Transition name="page" mode="out-in">
             <component :is="Component" />
@@ -210,7 +200,6 @@ const dashboardStore = useDashboardStore()
 
 const isMobileMenuOpen = ref(false)
 
-// Fecha o drawer mobile ao navegar entre rotas
 watch(
   () => route.path,
   () => {

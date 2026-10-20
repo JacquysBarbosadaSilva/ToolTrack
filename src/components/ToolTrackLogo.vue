@@ -7,9 +7,9 @@
         xmlns="http://www.w3.org/2000/svg"
         class="logo-svg"
       >
-        <!-- Disc / Blade inside the box -->
+
         <g class="disc-group">
-          <!-- Outer blade circle -->
+
           <circle
             cx="120"
             cy="70"
@@ -18,7 +18,7 @@
             stroke="#121633"
             stroke-width="5"
           />
-          <!-- Inner circle hole -->
+
           <circle
             cx="120"
             cy="70"
@@ -33,7 +33,6 @@
           />
         </g>
 
-        <!-- Back flap of the box -->
         <polygon
           points="88,68 100,32 142,32 152,68"
           fill="#ffffff"
@@ -42,7 +41,6 @@
           stroke-linejoin="round"
         />
 
-        <!-- Left flap (angled open to the left) -->
         <polygon
           points="62,82 28,68 62,50 96,65"
           fill="#ffffff"
@@ -51,7 +49,6 @@
           stroke-linejoin="round"
         />
 
-        <!-- Right flap (angled open to the right) -->
         <polygon
           points="144,65 178,50 212,68 178,82"
           fill="#ffffff"
@@ -60,7 +57,6 @@
           stroke-linejoin="round"
         />
 
-        <!-- Front Left Face of the box -->
         <polygon
           points="62,82 120,108 120,172 62,138"
           fill="#ffffff"
@@ -69,7 +65,6 @@
           stroke-linejoin="round"
         />
 
-        <!-- Front Right Face of the box (with 'T') -->
         <polygon
           points="120,108 178,82 178,138 120,172"
           fill="#ffffff"
@@ -78,8 +73,6 @@
           stroke-linejoin="round"
         />
 
-        <!-- Letter 'T' on the front right facet -->
-        <!-- Placed with transform to fit the perspective of the front right face -->
         <g transform="matrix(0.92, -0.38, 0, 1.05, 134, 150)">
           <text
             x="0"

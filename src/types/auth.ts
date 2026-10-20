@@ -1,11 +1,3 @@
-/**
- * Definições de Tipagem e Estrutura de Entidades
- * Preparadas para futura modelagem de chave/valor no AWS DynamoDB
- *
- * Exemplo de formato NoSQL planejado:
- * PK: USER#<id>
- * SK: METADATA#<id>
- */
 
 export interface User {
   id: string
@@ -23,4 +15,3 @@ export interface LoginCredentials {
   password?: string
   name?: string
 }
-

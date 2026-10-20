@@ -4,9 +4,8 @@
       {{ title }}
     </h2>
 
-    <!-- 3 Botões de Exportação como no Figma: Exportar PDF, Exportar Excel, Imprimir -->
     <div class="flex flex-wrap items-center gap-3">
-      <!-- Botão PDF (Azul) -->
+
       <button
         type="button"
         @click="$emit('export-pdf')"
@@ -16,7 +15,6 @@
         Exportar PDF
       </button>
 
-      <!-- Botão Excel (Verde) -->
       <button
         type="button"
         @click="$emit('export-excel')"
@@ -26,7 +24,6 @@
         Exportar Excel
       </button>
 
-      <!-- Botão Imprimir (Cinza) -->
       <button
         type="button"
         @click="$emit('print')"

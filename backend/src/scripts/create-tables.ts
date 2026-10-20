@@ -1,7 +1,4 @@
-/**
- * Cria as tabelas do DynamoDB (idempotente: pula as que já existem).
- * Uso: npm run tables:create
- */
+
 import {
   CreateTableCommand,
   DescribeTableCommand,

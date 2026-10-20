@@ -11,7 +11,6 @@ export const useUsuariosStore = defineStore('usuarios', () => {
   const searchQuery = ref<string>('')
   const users = ref<UserAccount[]>([])
 
-  // Filtro de usuários por termo de busca (nome, e-mail, cargo, status)
   const filteredUsers = computed<UserAccount[]>(() => {
     if (!searchQuery.value) return users.value
     const q = searchQuery.value.toLowerCase().trim()
@@ -24,9 +23,6 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     })
   })
 
-  /**
-   * Busca lista de usuários na API DynamoDB
-   */
   async function fetchUsers(): Promise<void> {
     isLoading.value = true
     error.value = null
@@ -40,16 +36,14 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     }
   }
 
-  /**
-   * Adiciona um novo usuário ao sistema via API
-   */
   async function addUser(payload: NewUserPayload): Promise<void> {
     isSaving.value = true
     error.value = null
     try {
+      const userName = (payload.name || payload.nome || '').trim()
       const created = await usersService.createUser({
-        nome: payload.name || payload.nome,
-        name: payload.name || payload.nome,
+        name: userName,
+        nome: userName,
         email: payload.email,
         password: payload.password,
         role: payload.role,
@@ -66,9 +60,6 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     }
   }
 
-  /**
-   * Atualiza dados de um usuário existente via API
-   */
   async function updateUser(id: string, payload: UpdateUserPayload): Promise<void> {
     isSaving.value = true
     error.value = null
@@ -86,9 +77,6 @@ export const useUsuariosStore = defineStore('usuarios', () => {
     }
   }
 
-  /**
-   * Remove um usuário via API
-   */
   async function deleteUser(id: string): Promise<void> {
     isDeleting.value = true
     error.value = null

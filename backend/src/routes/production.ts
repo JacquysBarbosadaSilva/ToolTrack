@@ -26,7 +26,6 @@ const createProductionSchema = z.object({
   maquinaId: z.string().optional(),
 });
 
-// GET /api/production
 router.get("/", requireAuth, validateQuery(queryProductionSchema), async (req, res, next) => {
   try {
     const { turno, data, dataInicio, dataFim } = req.query as {
@@ -39,13 +38,13 @@ router.get("/", requireAuth, validateQuery(queryProductionSchema), async (req, r
     let items: ProductionEntry[] = [];
 
     if (turno) {
-      // Query na PK turno + SK dataId (intervalo ou data específica)
+
       items = await productionRepository.queryByTurno(turno, { data, dataInicio, dataFim });
     } else if (data) {
-      // Query no GSI data-index
+
       items = await productionRepository.queryByDate(data);
     } else {
-      // Se não informado filtro específico, busca a data de hoje ou todas as entradas
+
       const today = new Date().toISOString().slice(0, 10);
       items = await productionRepository.queryByDate(today);
       if (items.length === 0) {
@@ -62,7 +61,6 @@ router.get("/", requireAuth, validateQuery(queryProductionSchema), async (req, r
   }
 });
 
-// POST /api/production
 router.post("/", requireAuth, validateBody(createProductionSchema), async (req, res, next) => {
   try {
     const { turno, data, quantidade, setor, categoria, maquinaId } = req.body;

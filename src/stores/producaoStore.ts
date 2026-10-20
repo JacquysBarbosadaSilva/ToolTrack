@@ -4,7 +4,7 @@ import type { Machine, MachineStatus, NewMachinePayload } from '@/types/producao
 import { machinesService } from '@/services/machines.service'
 
 export const useProducaoStore = defineStore('producao', () => {
-  // --- Estados Reativos (100% DynamoDB) ---
+
   const isLoading = ref<boolean>(false)
   const isSaving = ref<boolean>(false)
   const isDeleting = ref<boolean>(false)
@@ -12,7 +12,6 @@ export const useProducaoStore = defineStore('producao', () => {
   const searchQuery = ref<string>('')
   const machines = ref<Machine[]>([])
 
-  // --- Getters Reativos ---
   const filteredMachines = computed<Machine[]>(() => {
     if (!searchQuery.value.trim()) {
       return machines.value
@@ -27,10 +26,6 @@ export const useProducaoStore = defineStore('producao', () => {
     })
   })
 
-  // --- Ações Assíncronas ---
-  /**
-   * Busca as máquinas diretamente da API / DynamoDB
-   */
   async function fetchMachines(): Promise<void> {
     isLoading.value = true
     error.value = null
@@ -46,9 +41,6 @@ export const useProducaoStore = defineStore('producao', () => {
     }
   }
 
-  /**
-   * Adiciona nova máquina persistindo no DynamoDB
-   */
   async function addMachine(payload: NewMachinePayload): Promise<void> {
     isSaving.value = true
     error.value = null
@@ -63,9 +55,6 @@ export const useProducaoStore = defineStore('producao', () => {
     }
   }
 
-  /**
-   * Atualiza máquina existente no DynamoDB
-   */
   async function updateMachine(id: string, payload: Partial<NewMachinePayload>): Promise<void> {
     isSaving.value = true
     error.value = null
@@ -83,9 +72,6 @@ export const useProducaoStore = defineStore('producao', () => {
     }
   }
 
-  /**
-   * Remove máquina no DynamoDB
-   */
   async function deleteMachine(id: string): Promise<void> {
     isDeleting.value = true
     error.value = null
@@ -101,16 +87,16 @@ export const useProducaoStore = defineStore('producao', () => {
   }
 
   return {
-    // Estados
+
     isLoading,
     isSaving,
     isDeleting,
     error,
     searchQuery,
     machines,
-    // Getters
+
     filteredMachines,
-    // Ações
+
     fetchMachines,
     addMachine,
     updateMachine,

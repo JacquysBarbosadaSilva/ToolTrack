@@ -131,7 +131,7 @@ export async function getLatestSnapshot(
           ":metric": metric,
           ":beforeDate": beforeDate,
         },
-        ScanIndexForward: false, // data mais recente primeiro
+        ScanIndexForward: false,
         Limit: 1,
       })
     );

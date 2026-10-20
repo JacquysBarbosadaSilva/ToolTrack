@@ -1,13 +1,12 @@
 <template>
   <div class="space-y-6 pb-12 anim-fade-up">
-    <!-- Estado de Erro Global da View -->
+
     <div v-if="error" class="p-2">
       <ErrorState :message="error" @retry="perfilStore.fetchProfile" />
     </div>
 
-    <!-- 1. Card de Cabeçalho do Perfil -->
     <AppCard padding-class="p-6 sm:p-8">
-      <!-- Loading Skeleton -->
+
       <div v-if="isLoading" class="flex items-center justify-between">
         <div class="flex items-center gap-6">
           <SkeletonBlock class="w-24 h-24 rounded-full" />
@@ -22,25 +21,23 @@
         <SkeletonBlock class="h-10 w-28 rounded-lg" />
       </div>
 
-      <!-- Dados Reais -->
       <div v-else class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-        <!-- Avatar e Dados Principais -->
+
         <div class="flex items-center gap-6">
-          <!-- Avatar circular grande com a inicial -->
+
           <div
             class="w-24 h-24 rounded-full bg-[#111B2E] text-white flex items-center justify-center font-bold text-4xl shrink-0 select-none"
           >
             {{ userInitial }}
           </div>
 
-          <!-- Nome, Cargo e Localização -->
           <div class="space-y-1.5">
             <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
               {{ profile.nome || 'Usuário' }}
             </h1>
 
             <div class="flex flex-wrap items-center gap-3">
-              <!-- Badge de Cargo / Função (Pílula escura #111B2E com ícone de escudo) -->
+
               <span
                 class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#111B2E] text-white"
               >
@@ -48,7 +45,6 @@
                 <span>{{ profile.cargo || 'Operador' }}</span>
               </span>
 
-              <!-- Localização com ícone de MapPin -->
               <div class="flex items-center gap-1.5 text-xs sm:text-sm text-slate-600 font-medium">
                 <MapPin class="w-3.5 h-3.5 text-slate-500 shrink-0" />
                 <span>{{ profile.localizacao || 'Planta Principal' }}</span>
@@ -57,7 +53,6 @@
           </div>
         </div>
 
-        <!-- Botão "Editar Perfil" -->
         <div class="flex items-center shrink-0">
           <BaseButton
             id="btn-edit-profile"
@@ -73,9 +68,8 @@
       </div>
     </AppCard>
 
-    <!-- 2. Card de Informações Pessoais -->
     <AppCard padding-class="p-6 sm:p-8">
-      <!-- Título da Seção com linha divisória -->
+
       <div>
         <h2 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
           Informações Pessoais
@@ -83,7 +77,6 @@
         <hr class="border-t border-slate-200/80 my-5" />
       </div>
 
-      <!-- Loading Skeleton -->
       <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
         <div v-for="n in 4" :key="`sk-info-${n}`" class="space-y-2">
           <SkeletonBlock class="h-3 w-20 rounded" />
@@ -91,9 +84,8 @@
         </div>
       </div>
 
-      <!-- Grid de 2 Colunas com os 4 campos do Figma -->
       <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
-        <!-- Coluna 1, Linha 1: Email -->
+
         <div>
           <span class="block text-xs font-mono font-medium text-slate-500 tracking-wide">
             Email
@@ -106,7 +98,6 @@
           </div>
         </div>
 
-        <!-- Coluna 2, Linha 1: Telefone -->
         <div>
           <span class="block text-xs font-mono font-medium text-slate-500 tracking-wide">
             Telefone
@@ -119,7 +110,6 @@
           </div>
         </div>
 
-        <!-- Coluna 1, Linha 2: Departamento -->
         <div>
           <span class="block text-xs font-mono font-medium text-slate-500 tracking-wide">
             Departamento
@@ -132,7 +122,6 @@
           </div>
         </div>
 
-        <!-- Coluna 2, Linha 2: ID do Funcionário -->
         <div>
           <span class="block text-xs font-mono font-medium text-slate-500 tracking-wide">
             ID do Funcionário
@@ -147,7 +136,6 @@
       </div>
     </AppCard>
 
-    <!-- Modal: Editar Perfil (Teleportado para body para desvincular do contexto de animação da página) -->
     <Teleport to="body">
       <Transition name="modal">
       <div
@@ -156,7 +144,7 @@
         @click.self="isEditModalOpen = false"
       >
         <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden anim-scale-in">
-          <!-- Modal Header -->
+
           <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
             <h3 class="text-base font-bold text-slate-900">
               Editar Perfil
@@ -170,10 +158,9 @@
             </button>
           </div>
 
-          <!-- Edit Form -->
           <form @submit.prevent="handleSaveProfile" class="p-6 space-y-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <!-- Nome -->
+
               <div>
                 <label for="edit-nome" class="block text-xs font-semibold text-slate-700 mb-1">
                   Nome Completo *
@@ -188,7 +175,6 @@
                 />
               </div>
 
-              <!-- Cargo -->
               <div>
                 <label for="edit-cargo" class="block text-xs font-semibold text-slate-700 mb-1">
                   Cargo *
@@ -204,7 +190,6 @@
               </div>
             </div>
 
-            <!-- Localização -->
             <div>
               <label for="edit-loc" class="block text-xs font-semibold text-slate-700 mb-1">
                 Localização *
@@ -220,7 +205,7 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <!-- E-mail -->
+
               <div>
                 <label for="edit-email" class="block text-xs font-semibold text-slate-700 mb-1">
                   Email *
@@ -235,7 +220,6 @@
                 />
               </div>
 
-              <!-- Telefone -->
               <div>
                 <label for="edit-tel" class="block text-xs font-semibold text-slate-700 mb-1">
                   Telefone *
@@ -251,7 +235,6 @@
               </div>
             </div>
 
-            <!-- Departamento -->
             <div>
               <label for="edit-dep" class="block text-xs font-semibold text-slate-700 mb-1">
                 Departamento *
@@ -266,7 +249,6 @@
               />
             </div>
 
-            <!-- Modal Footer -->
             <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
               <button
                 type="button"
@@ -312,20 +294,16 @@ import { usePerfilStore } from '@/stores/perfilStore'
 import { showToast } from '@/services/toast'
 import type { UpdateProfilePayload } from '@/types/perfil'
 
-// --- Store Pinia com storeToRefs ---
 const perfilStore = usePerfilStore()
 const { profile, isLoading, isSaving, error } = storeToRefs(perfilStore)
 
-// --- Estado Local da View ---
 const isEditModalOpen = ref(false)
 
-// Letra Inicial para o Avatar Circular
 const userInitial = computed(() => {
   const name = (profile.value.nome || '').trim()
   return (name[0] || 'U').toUpperCase()
 })
 
-// Formulário de Edição
 const editForm = reactive<UpdateProfilePayload>({
   nome: '',
   cargo: '',
@@ -391,7 +369,6 @@ onMounted(() => {
   perfilStore.fetchProfile()
 })
 
-// Garante que o modal seja fechado ao navegar para outra rota
 onBeforeRouteLeave(() => {
   isEditModalOpen.value = false
 })

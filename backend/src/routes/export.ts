@@ -36,7 +36,6 @@ async function getFilteredProducts(query: z.infer<typeof exportQuerySchema>): Pr
   });
 }
 
-// GET /api/export/products.xlsx
 router.get("/products.xlsx", requireAuth, validateQuery(exportQuerySchema), async (req, res, next) => {
   try {
     const products = await getFilteredProducts(req.query as any);
@@ -59,7 +58,6 @@ router.get("/products.xlsx", requireAuth, validateQuery(exportQuerySchema), asyn
       { header: "Data Cadastro", key: "dataCadastro", width: 16 },
     ];
 
-    // Estilização do cabeçalho
     const headerRow = worksheet.getRow(1);
     headerRow.font = { bold: true, color: { argb: "FFFFFFFF" }, size: 11 };
     headerRow.fill = {
@@ -70,7 +68,6 @@ router.get("/products.xlsx", requireAuth, validateQuery(exportQuerySchema), asyn
     headerRow.alignment = { vertical: "middle", horizontal: "center" };
     headerRow.height = 24;
 
-    // Inserção das linhas de dados
     products.forEach((p) => {
       const row = worksheet.addRow({
         sku: p.sku,
@@ -84,7 +81,6 @@ router.get("/products.xlsx", requireAuth, validateQuery(exportQuerySchema), asyn
         dataCadastro: p.dataCadastro,
       });
 
-      // Alinhamento central para colunas curtas
       row.getCell("sku").alignment = { horizontal: "center" };
       row.getCell("turno").alignment = { horizontal: "center" };
       row.getCell("status").alignment = { horizontal: "center" };
@@ -109,7 +105,6 @@ router.get("/products.xlsx", requireAuth, validateQuery(exportQuerySchema), asyn
   }
 });
 
-// GET /api/export/products.pdf
 router.get("/products.pdf", requireAuth, validateQuery(exportQuerySchema), async (req, res, next) => {
   try {
     const products = await getFilteredProducts(req.query as any);
@@ -124,7 +119,6 @@ router.get("/products.pdf", requireAuth, validateQuery(exportQuerySchema), async
 
     doc.pipe(res);
 
-    // Barra de topo e Título
     doc.rect(0, 0, doc.page.width, 54).fill("#111B2E");
     doc.fillColor("#FFFFFF").fontSize(16).font("Helvetica-Bold").text("ToolTrack - Relatório de Estoque", 40, 18);
 
@@ -138,7 +132,6 @@ router.get("/products.pdf", requireAuth, validateQuery(exportQuerySchema), async
 
     let y = 105;
 
-    // Cabeçalho da Tabela
     doc.rect(40, y, doc.page.width - 80, 20).fill("#2F4A85");
     doc.fillColor("#FFFFFF").fontSize(8).font("Helvetica-Bold");
     doc.text("SKU", 45, y + 6, { width: 70 });
@@ -153,7 +146,7 @@ router.get("/products.pdf", requireAuth, validateQuery(exportQuerySchema), async
     doc.font("Helvetica").fontSize(8);
 
     products.forEach((p, index) => {
-      // Nova página se atingir o limite inferior
+
       if (y > 770) {
         doc.addPage();
         y = 40;

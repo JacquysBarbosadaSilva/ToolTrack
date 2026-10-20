@@ -1,15 +1,13 @@
 <template>
   <div class="bg-white rounded-xl p-6 border border-slate-200 shadow-xs">
-    <!-- Cabeçalho do Card de Filtros (Figma: Título limpo em negrito) -->
+
     <h2 class="text-xl font-bold text-slate-900 mb-4 tracking-tight">
       {{ title }}
     </h2>
 
-    <!-- Conteúdo dos Filtros + Ação Filtrar -->
     <form @submit.prevent="$emit('filter')" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
       <slot />
 
-      <!-- Botão Filtrar Primário Azul como no Figma -->
       <div v-if="!hideSubmit" class="w-full">
         <button
           type="submit"

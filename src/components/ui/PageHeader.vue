@@ -9,7 +9,6 @@
       </p>
     </div>
 
-    <!-- Ações no Topo (botões, filtros rápidos, etc.) -->
     <div v-if="$slots.actions" class="flex items-center gap-2 flex-wrap">
       <slot name="actions" />
     </div>

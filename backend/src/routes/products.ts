@@ -39,7 +39,6 @@ const updateProductSchema = z.object({
   dataCadastro: z.string().optional(),
 });
 
-// GET /api/products (com paginação e filtros)
 router.get("/", requireAuth, validateQuery(listQuerySchema), async (req, res, next) => {
   try {
     const result = await productsService.listProducts(req.query as any);
@@ -49,7 +48,6 @@ router.get("/", requireAuth, validateQuery(listQuerySchema), async (req, res, ne
   }
 });
 
-// GET /api/products/:sku
 router.get("/:sku", requireAuth, async (req, res, next) => {
   try {
     const product = await productsService.getProductBySku(req.params.sku);
@@ -59,7 +57,6 @@ router.get("/:sku", requireAuth, async (req, res, next) => {
   }
 });
 
-// POST /api/products
 router.post("/", requireAuth, validateBody(createProductSchema), async (req, res, next) => {
   try {
     const product = await productsService.createProduct(req.body);
@@ -69,7 +66,6 @@ router.post("/", requireAuth, validateBody(createProductSchema), async (req, res
   }
 });
 
-// PUT /api/products/:sku
 router.put("/:sku", requireAuth, validateBody(updateProductSchema), async (req, res, next) => {
   try {
     const product = await productsService.updateProduct(req.params.sku, req.body);
@@ -79,7 +75,6 @@ router.put("/:sku", requireAuth, validateBody(updateProductSchema), async (req, 
   }
 });
 
-// DELETE /api/products/:sku
 router.delete("/:sku", requireAuth, async (req, res, next) => {
   try {
     await productsService.deleteProduct(req.params.sku);

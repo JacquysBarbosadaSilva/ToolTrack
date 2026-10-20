@@ -44,7 +44,6 @@ function formatProfile(user: UserRecord) {
   };
 }
 
-// GET /api/profile
 router.get("/", requireAuth, async (req, res, next) => {
   try {
     const userId = req.user?.id;
@@ -63,7 +62,6 @@ router.get("/", requireAuth, async (req, res, next) => {
   }
 });
 
-// PUT /api/profile
 router.put("/", requireAuth, validateBody(updateProfileSchema), async (req, res, next) => {
   try {
     const userId = req.user?.id;

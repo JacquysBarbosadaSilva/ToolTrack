@@ -1,8 +1,4 @@
-/**
- * ÚNICO ponto de ligação com a AWS.
- * Todo acesso ao DynamoDB no projeto deve importar `docClient` (ou `dynamoClient`) daqui.
- * As credenciais vêm SOMENTE de backend/.env (AWS Academy: access key + secret + session token).
- */
+
 import "dotenv/config";
 import { DynamoDBClient, ListTablesCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
@@ -41,7 +37,6 @@ const AUTH_ERRORS = new Set([
   "AccessDeniedException",
 ]);
 
-/** Valida a conexão com a AWS. Chame no start do servidor e nos scripts. */
 export async function assertAwsConnection(): Promise<void> {
   try {
     await dynamoClient.send(new ListTablesCommand({ Limit: 1 }));

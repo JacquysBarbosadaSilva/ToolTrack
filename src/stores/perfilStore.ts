@@ -23,9 +23,6 @@ export const usePerfilStore = defineStore('perfil', () => {
     atualizadoEm: ''
   })
 
-  /**
-   * Busca dados do perfil no DynamoDB via API
-   */
   async function fetchProfile(): Promise<void> {
     isLoading.value = true
     error.value = null
@@ -39,9 +36,6 @@ export const usePerfilStore = defineStore('perfil', () => {
     }
   }
 
-  /**
-   * Atualiza as informações do usuário no DynamoDB via API
-   */
   async function updateProfile(payload: UpdateProfilePayload): Promise<void> {
     isSaving.value = true
     error.value = null
@@ -50,7 +44,6 @@ export const usePerfilStore = defineStore('perfil', () => {
       const updated = await profileService.updateProfile(payload)
       Object.assign(profile, updated)
 
-      // Sincroniza com a authStore para atualizar Header e Sidebar em tempo real
       const authStore = useAuthStore()
       if (authStore.user) {
         authStore.user.nome = updated.nome

@@ -104,7 +104,6 @@ export async function list(
   const expressionNames: Record<string, string> = {};
   const expressionValues: Record<string, any> = {};
 
-  // Decide whether to use a GSI (status-index, categoria-index, turno-index) or a Scan
   let useGsi: { name: string; keyField: string; keyValue: string } | null = null;
 
   if (params.status) {
@@ -115,14 +114,12 @@ export async function list(
     useGsi = { name: "turno-index", keyField: "turno", keyValue: params.turno };
   }
 
-  // Filter conditions
   if (params.setor) {
     filterExpressions.push("#setor = :setor");
     expressionNames["#setor"] = "setor";
     expressionValues[":setor"] = params.setor;
   }
 
-  // Remaining filters not covered by chosen GSI
   if (params.status && useGsi?.keyField !== "status") {
     filterExpressions.push("#status = :status");
     expressionNames["#status"] = "status";
@@ -165,7 +162,7 @@ export async function list(
       ExpressionAttributeValues: expressionValues,
       Limit: limit,
       ExclusiveStartKey: exclusiveStartKey,
-      ScanIndexForward: false, // mais recentes primeiro por dataCadastro
+      ScanIndexForward: false,
     };
 
     if (filterExpression) {

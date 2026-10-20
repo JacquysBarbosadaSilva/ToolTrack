@@ -1,13 +1,12 @@
 <template>
   <div class="space-y-6 pb-12 anim-fade-up">
-    <!-- 1. Barra Superior da Tela (Figma: ToolTrack à esquerda com linha divisória) -->
+
     <header class="pb-4 border-b border-slate-200/80">
       <h2 class="text-lg font-bold text-slate-900 tracking-tight">
         ToolTrack
       </h2>
     </header>
 
-    <!-- 2. Cabeçalho de Seção (Gerenciar Usuários + Subtítulo) -->
     <div>
       <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
         Gerenciar Usuários
@@ -17,18 +16,17 @@
       </p>
     </div>
 
-    <!-- 3. Layout de Duas Colunas (Figma: Formulário à esquerda, Tabela à direita) -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-      <!-- Coluna da Esquerda: Card "Adicionar novo usuário" -->
+
       <div class="lg:col-span-5 xl:col-span-4">
         <AppCard padding-class="p-6">
-          <!-- Título com linha divisória abaixo -->
+
           <h2 class="text-base font-bold text-slate-900 pb-3 border-b border-slate-200/80 mb-5">
             Adicionar novo usuário
           </h2>
 
           <form @submit.prevent="handleCreateUser" class="space-y-4">
-            <!-- 1. Nome completo -->
+
             <div>
               <label for="new-user-name" class="block text-xs font-mono font-medium text-slate-500 mb-1.5">
                 Nome completo
@@ -46,7 +44,6 @@
               </div>
             </div>
 
-            <!-- 2. Email -->
             <div>
               <label for="new-user-email" class="block text-xs font-mono font-medium text-slate-500 mb-1.5">
                 Email
@@ -64,7 +61,6 @@
               </div>
             </div>
 
-            <!-- 3. Cargo -->
             <div>
               <label for="new-user-role" class="block text-xs font-mono font-medium text-slate-500 mb-1.5">
                 Cargo
@@ -83,7 +79,6 @@
               </div>
             </div>
 
-            <!-- 4. Senha -->
             <div>
               <label for="new-user-password" class="block text-xs font-mono font-medium text-slate-500 mb-1.5">
                 Senha
@@ -102,7 +97,6 @@
               </div>
             </div>
 
-            <!-- 5. Botão Salvar Usuário -->
             <div class="pt-2">
               <BaseButton
                 type="submit"
@@ -119,10 +113,9 @@
         </AppCard>
       </div>
 
-      <!-- Coluna da Direita: Card "Usuários" com Tabela e Busca -->
       <div class="lg:col-span-7 xl:col-span-8">
         <AppCard :no-padding="true" card-class="overflow-hidden">
-          <!-- Header do Card: Título "Usuários" e Busca "Search users..." -->
+
           <div class="p-5 border-b border-slate-200/80 flex items-center justify-between gap-4">
             <h2 class="text-base font-bold text-slate-900">
               Usuários
@@ -140,7 +133,6 @@
             </div>
           </div>
 
-          <!-- Estado de Carregamento (Skeleton) -->
           <div v-if="isLoading" class="p-6 space-y-4">
             <div v-for="n in 3" :key="`sk-user-${n}`" class="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
               <div class="flex items-center gap-3">
@@ -159,17 +151,14 @@
             </div>
           </div>
 
-          <!-- Estado de Erro -->
           <div v-else-if="error" class="p-6">
             <ErrorState :message="error" @retry="fetchUsers" />
           </div>
 
-          <!-- Estado Vazio -->
           <div v-else-if="filteredUsers.length === 0" class="p-6">
             <EmptyState title="Nenhum registro encontrado" />
           </div>
 
-          <!-- Tabela de Usuários -->
           <div v-else class="overflow-x-auto min-h-[220px]">
             <table class="w-full text-left">
               <thead>
@@ -187,7 +176,7 @@
                   :key="user.id"
                   class="hover:bg-slate-50/50 transition-colors"
                 >
-                  <!-- Coluna User: Avatar circular com inicial + Nome e Email -->
+
                   <td class="py-4 px-6">
                     <div class="flex items-center gap-3">
                       <div
@@ -207,7 +196,6 @@
                     </div>
                   </td>
 
-                  <!-- Coluna Cargo: Badge ADMIN (lilás) ou USER (cinza) -->
                   <td class="py-4 px-4 text-center">
                     <span
                       class="inline-flex items-center justify-center px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider"
@@ -217,7 +205,6 @@
                     </span>
                   </td>
 
-                  <!-- Coluna Status: Ponto verde (Online) ou cinza (Offline) -->
                   <td class="py-4 px-4 text-center">
                     <span class="inline-flex items-center gap-1.5 text-xs font-medium text-slate-700">
                       <span
@@ -228,7 +215,6 @@
                     </span>
                   </td>
 
-                  <!-- Coluna Ações: Botão Editar (pill) + Botão Excluir (quadrado vermelho com x) -->
                   <td class="py-4 px-6 text-center">
                     <div class="inline-flex items-center justify-center gap-2">
                       <button
@@ -255,7 +241,6 @@
             </table>
           </div>
 
-          <!-- Rodapé da tabela com a contagem real centralizada -->
           <div class="py-4 border-t border-slate-200/80 text-center text-xs text-slate-500">
             Mostrando {{ filteredUsers.length }} de {{ users.length }} usuário(s)
           </div>
@@ -263,7 +248,6 @@
       </div>
     </div>
 
-    <!-- Modal 1: Editar Usuário (Teleportado para body) -->
     <Teleport to="body">
       <Transition name="modal">
       <div
@@ -286,7 +270,7 @@
           </div>
 
           <form @submit.prevent="handleSaveEditUser" class="p-6 space-y-4">
-            <!-- Nome -->
+
             <div>
               <label for="edit-user-name" class="block text-xs font-semibold text-slate-700 mb-1">
                 Nome completo *
@@ -300,7 +284,6 @@
               />
             </div>
 
-            <!-- Email -->
             <div>
               <label for="edit-user-email" class="block text-xs font-semibold text-slate-700 mb-1">
                 Email *
@@ -314,7 +297,6 @@
               />
             </div>
 
-            <!-- Cargo -->
             <div>
               <label for="edit-user-role" class="block text-xs font-semibold text-slate-700 mb-1">
                 Cargo *
@@ -329,7 +311,6 @@
               </select>
             </div>
 
-            <!-- Status -->
             <div>
               <label for="edit-user-status" class="block text-xs font-semibold text-slate-700 mb-1">
                 Status *
@@ -344,7 +325,6 @@
               </select>
             </div>
 
-            <!-- Nova Senha Opcional -->
             <div>
               <label for="edit-user-password" class="block text-xs font-semibold text-slate-700 mb-1">
                 Nova Senha (opcional)
@@ -383,7 +363,6 @@
     </Transition>
     </Teleport>
 
-    <!-- Modal 2: Confirmação de Exclusão (Teleportado para body) -->
     <Teleport to="body">
       <Transition name="modal">
       <div
@@ -459,12 +438,10 @@ import { useUsuariosStore } from '@/stores/usuariosStore'
 import { showToast } from '@/services/toast'
 import type { UserAccount, NewUserPayload, UpdateUserPayload } from '@/types/usuarios'
 
-// --- Injeção da Store com storeToRefs ---
 const usuariosStore = useUsuariosStore()
 const { users, filteredUsers, isLoading, isSaving, isDeleting, error, searchQuery } = storeToRefs(usuariosStore)
 const { fetchUsers, addUser, updateUser, deleteUser } = usuariosStore
 
-// --- Estado do Formulário de Criação ---
 const newUserForm = reactive<NewUserPayload>({
   name: '',
   email: '',
@@ -472,7 +449,6 @@ const newUserForm = reactive<NewUserPayload>({
   password: ''
 })
 
-// --- Estado do Modal de Edição ---
 const isEditModalOpen = ref(false)
 const editingUserId = ref<string | null>(null)
 const editForm = reactive<UpdateUserPayload>({
@@ -483,7 +459,6 @@ const editForm = reactive<UpdateUserPayload>({
   password: ''
 })
 
-// --- Estado do Modal de Confirmação de Exclusão ---
 const isDeleteModalOpen = ref(false)
 const userToDelete = ref<UserAccount | null>(null)
 
@@ -510,7 +485,7 @@ async function handleCreateUser() {
 
 function openEditModal(user: UserAccount) {
   editingUserId.value = user.id
-  editForm.name = user.name || (user as any).nome || ''
+  editForm.name = user.name || user.nome || ''
   editForm.email = user.email
   editForm.role = (user.role || 'USER').toUpperCase() as any
   editForm.status = user.status || 'Online'
@@ -552,7 +527,7 @@ async function handleExecuteDelete() {
   if (!userToDelete.value) return
   try {
     await deleteUser(userToDelete.value.id)
-    showToast(`Usuário ${userToDelete.value.name || (userToDelete.value as any).nome} removido com sucesso!`)
+    showToast(`Usuário ${userToDelete.value.name || userToDelete.value.nome} removido com sucesso!`)
     isDeleteModalOpen.value = false
     userToDelete.value = null
   } catch (err: any) {
@@ -564,7 +539,6 @@ onMounted(() => {
   fetchUsers()
 })
 
-// Fecha os modais ao navegar para outra rota
 onBeforeRouteLeave(() => {
   isEditModalOpen.value = false
   isDeleteModalOpen.value = false

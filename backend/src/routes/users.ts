@@ -38,7 +38,6 @@ const updateUserSchema = z.object({
   idFuncionario: z.string().optional(),
 });
 
-// GET /api/users (Somente admin)
 router.get("/", requireAuth, requireRole("admin", "ADMIN"), async (_req, res, next) => {
   try {
     const users = await usersRepository.listAll();
@@ -48,7 +47,6 @@ router.get("/", requireAuth, requireRole("admin", "ADMIN"), async (_req, res, ne
   }
 });
 
-// POST /api/users (Somente admin)
 router.post(
   "/",
   requireAuth,
@@ -97,7 +95,6 @@ router.post(
   }
 );
 
-// PUT /api/users/:id (Somente admin)
 router.put(
   "/:id",
   requireAuth,
@@ -157,7 +154,6 @@ router.put(
   }
 );
 
-// DELETE /api/users/:id (Somente admin)
 router.delete("/:id", requireAuth, requireRole("admin", "ADMIN"), async (req, res, next) => {
   try {
     const { id } = req.params;

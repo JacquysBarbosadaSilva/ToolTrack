@@ -51,7 +51,7 @@ export async function apiRequest<T = any>(
   }
 
   if (!response.ok) {
-    // 401 Unauthorized -> limpa sessão e redireciona ao login
+
     if (response.status === 401) {
       localStorage.removeItem('token')
       localStorage.removeItem('user')
@@ -60,7 +60,6 @@ export async function apiRequest<T = any>(
       }
     }
 
-    // 503 AWS_CREDENTIALS_EXPIRED -> notifica via Toast amigável
     if (response.status === 503 && data?.code === 'AWS_CREDENTIALS_EXPIRED') {
       showToast(
         data.message ||

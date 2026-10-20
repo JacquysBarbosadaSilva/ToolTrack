@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6 pb-12 anim-fade-up">
-    <!-- 1. Título e Subtítulo da Página -->
+
     <div>
       <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
         Dashboard Overview
@@ -10,7 +10,6 @@
       </p>
     </div>
 
-    <!-- 2. Quatro Cards de KPI (Total Inventory, Low Stock, Active Machines, Maintenance Tasks) -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
         label="TOTAL INVENTORY ITEMS"
@@ -57,13 +56,11 @@
       />
     </div>
 
-    <!-- 3. Seção Acessados Recentemente -->
     <div class="space-y-3">
       <h2 class="text-xl font-bold text-slate-900 tracking-tight">
         Acessados recentemente
       </h2>
 
-      <!-- Card pequeno do atalho "Produtos" -->
       <router-link
         to="/producao"
         class="w-64 bg-white border border-slate-200 rounded-xl p-5 shadow-xs flex flex-col items-center justify-center text-center hover:border-blue-400 hover:shadow-sm transition-all group cursor-pointer"
@@ -80,13 +77,12 @@
       </router-link>
     </div>
 
-    <!-- 4. Card Filtros do Relatório -->
     <FilterBar
       title="Filtros do Relatório"
       :loading="isFiltering"
       @filter="handleFilter"
     >
-      <!-- Setor -->
+
       <BaseSelect
         label="Setor"
         v-model="filters.setor"
@@ -94,7 +90,6 @@
         :options="availableSectors"
       />
 
-      <!-- Turno -->
       <BaseSelect
         label="Turno"
         v-model="filters.turno"
@@ -102,7 +97,6 @@
         :options="availableTurnos"
       />
 
-      <!-- Categoria -->
       <BaseSelect
         label="Categoria"
         v-model="filters.categoria"
@@ -110,7 +104,6 @@
         :options="availableCategories"
       />
 
-      <!-- Data -->
       <div>
         <label class="block text-xs font-medium text-slate-700 mb-1.5">
           Data
@@ -131,9 +124,8 @@
       </div>
     </FilterBar>
 
-    <!-- 5. Dois Cards Lado a Lado: Categoria (PIZZA) e Turno (BARRAS) -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Gráfico de Pizza: Categoria (Setores cheios sem furo, legenda à direita) -->
+
       <PieChart
         title="Categoria"
         :data="pieData"
@@ -142,7 +134,6 @@
         @retry="fetchDashboardData"
       />
 
-      <!-- Gráfico de Barras: Turno (Manhã, Noite, Tarde com valores no topo) -->
       <BarChart
         title="Turno"
         :data="barData"
@@ -152,7 +143,6 @@
       />
     </div>
 
-    <!-- 6. Card Exportar Relatório (PDF azul, Excel verde, Imprimir cinza) -->
     <ExportBar
       title="Exportar Relatório"
       class="no-print"
@@ -164,7 +154,6 @@
       @print="handlePrint"
     />
 
-    <!-- 7. Card Estoque com Tabela Principal -->
     <DataTable
       title="Estoque"
       :columns="tableColumns"
@@ -173,22 +162,19 @@
       :error="tableError || error"
       @retry="fetchDashboardData"
     >
-      <!-- Custom Badge Turno -->
+
       <template #cell-turno="{ value }">
         <ShiftBadge :shift="value" />
       </template>
 
-      <!-- Custom Badge Status -->
       <template #cell-status="{ value }">
         <StatusBadge :status="value" />
       </template>
 
-      <!-- Formatação de Quantidade com separador brasileiro -->
       <template #cell-quantidade="{ value }">
         <span>{{ Number(value || 0).toLocaleString('pt-BR') }}</span>
       </template>
 
-      <!-- Formatação da Data de Cadastro -->
       <template #cell-dataCadastro="{ value }">
         <span>{{ value || '-' }}</span>
       </template>
@@ -221,7 +207,6 @@ import {
   type ColumnDefinition
 } from '@/components/ui'
 
-// --- Pinia Stores (Consumo com storeToRefs) ---
 const authStore = useAuthStore()
 const dashboardStore = useDashboardStore()
 const {
@@ -242,12 +227,10 @@ const {
 
 const { fetchDashboardData, applyFilters } = dashboardStore
 
-// Estados locais de exportação
 const exportingPdf = ref<boolean>(false)
 const exportingExcel = ref<boolean>(false)
 const printing = ref<boolean>(false)
 
-// Colunas da Tabela (todas centralizadas conforme o Figma)
 const tableColumns: ColumnDefinition[] = [
   { key: 'sku', label: 'SKU', align: 'center' },
   { key: 'categoria', label: 'Categoria', align: 'center' },
@@ -257,7 +240,6 @@ const tableColumns: ColumnDefinition[] = [
   { key: 'dataCadastro', label: 'Data Cadastro', align: 'center' }
 ]
 
-// Mapeamento dos KPIs dinâmicos vindos da API
 const kpiItems = computed(() => {
   const findCard = (title: string) => metrics.value.find((m) => m.title === title)
   const total = findCard('TOTAL INVENTORY ITEMS')
@@ -285,7 +267,6 @@ const kpiItems = computed(() => {
   }
 })
 
-// Mapeamento dos dados para o PieChart
 const pieData = computed(() => {
   return categoryChartData.value.map(item => ({
     label: item.name,
@@ -294,7 +275,6 @@ const pieData = computed(() => {
   }))
 })
 
-// Mapeamento dos dados para o BarChart (Manhã, Noite, Tarde)
 const barData = computed(() => {
   return shiftChartData.value.map(item => ({
     label: item.shift,
@@ -303,7 +283,6 @@ const barData = computed(() => {
   }))
 })
 
-// Ações
 async function handleFilter() {
   await applyFilters()
 }

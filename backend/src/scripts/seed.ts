@@ -1,9 +1,4 @@
-/**
- * Popula o banco.
- *   npm run seed          -> admin + lookups (setores, categorias, turnos)  [mínimo para o sistema funcionar]
- *   npm run seed -- --demo -> também produtos, produção, máquinas, manutenção e snapshots de exemplo
- * Idempotente para admin e lookups (não duplica). Os dados demo só são inseridos se a tabela estiver vazia.
- */
+
 import { randomUUID } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { PutCommand, QueryCommand, ScanCommand, BatchWriteCommand } from "@aws-sdk/lib-dynamodb";
@@ -85,7 +80,7 @@ async function seedLookups() {
     ...CATEGORIAS.map((valor, ordem) => ({ tipo: "CATEGORIA", valor, ordem, ativo: true })),
     ...TURNOS.map((valor, ordem) => ({ tipo: "TURNO", valor, ordem, ativo: true })),
   ];
-  await batchPut(TABLES.lookups, rows); // PutRequest é upsert: idempotente
+  await batchPut(TABLES.lookups, rows);
   console.log(`+ lookups gravados (${rows.length})`);
 }
 

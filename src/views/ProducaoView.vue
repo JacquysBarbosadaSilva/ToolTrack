@@ -1,12 +1,11 @@
 <template>
   <div class="space-y-6 pb-12 anim-fade-up">
-    <!-- 1. Barra Superior da Tela (Figma: ToolTrack à esquerda e "+ Adicionar Nova Esteira/Máquina" à direita) -->
+
     <header class="flex items-center justify-between pb-4 border-b border-slate-200/80">
       <h2 class="text-lg font-bold text-slate-900 tracking-tight">
         ToolTrack
       </h2>
 
-      <!-- Botão "+ Adicionar Nova Esteira/Máquina" com BaseButton -->
       <BaseButton
         id="btn-add-machine-top"
         variant="primary"
@@ -17,7 +16,6 @@
       </BaseButton>
     </header>
 
-    <!-- 2. Cabeçalho de Seção (Esteiras/Máquinas + Subtítulo à esquerda, Buscar máquina à direita) -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
       <div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
@@ -28,7 +26,6 @@
         </p>
       </div>
 
-      <!-- Barra de busca no topo da área de conteúdo (Figma: Buscar máquina...) -->
       <div class="relative w-full sm:w-72">
         <Search class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
         <input
@@ -41,13 +38,10 @@
       </div>
     </div>
 
-    <!-- 3. Grid dos Cards de Máquinas (Figma: 3 colunas, 4 cards com borda superior colorida) -->
-    <!-- Estado de Erro -->
     <div v-if="error" class="py-4">
       <ErrorState :message="error" @retry="fetchMachines" />
     </div>
 
-    <!-- Loading Skeleton -->
     <div v-else-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="n in 3"
@@ -70,12 +64,10 @@
       </div>
     </div>
 
-    <!-- Estado Vazio -->
     <div v-else-if="filteredMachines.length === 0" class="py-6">
       <EmptyState title="Nenhuma máquina encontrada" />
     </div>
 
-    <!-- Cards de Máquinas Reais -->
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <MachineCard
         v-for="machine in filteredMachines"
@@ -86,7 +78,6 @@
       />
     </div>
 
-    <!-- Modal 1: Adicionar Nova Esteira/Máquina (Teleportado para body) -->
     <Teleport to="body">
       <Transition name="modal">
       <div
@@ -198,7 +189,6 @@
     </Transition>
     </Teleport>
 
-    <!-- Modal 2: Editar Esteira/Máquina (Teleportado para body) -->
     <Teleport to="body">
       <Transition name="modal">
       <div
@@ -310,7 +300,6 @@
     </Transition>
     </Teleport>
 
-    <!-- Modal 3: Confirmação de Exclusão (Teleportado para body) -->
     <Teleport to="body">
       <Transition name="modal">
       <div
@@ -375,7 +364,6 @@ import { MachineCard, BaseButton, SkeletonBlock, ErrorState, EmptyState } from '
 import { showToast } from '@/services/toast'
 import type { Machine, MachineStatus } from '@/types/producao'
 
-// --- Pinia Store ---
 const producaoStore = useProducaoStore()
 const {
   isLoading,
@@ -388,7 +376,6 @@ const {
 
 const { fetchMachines, addMachine, updateMachine, deleteMachine } = producaoStore
 
-// --- Modal 1: Adicionar Máquina ---
 const isModalOpen = ref(false)
 const newMachineForm = ref<{
   name: string
@@ -432,7 +419,6 @@ async function handleSaveMachine() {
   }
 }
 
-// --- Modal 2: Editar Máquina ---
 const isEditModalOpen = ref(false)
 const editingMachineId = ref<string | null>(null)
 const editMachineForm = ref<{
@@ -484,7 +470,6 @@ async function handleSaveEditMachine() {
   }
 }
 
-// --- Modal 3: Confirmação de Exclusão ---
 const isDeleteModalOpen = ref(false)
 const machineToDelete = ref<Machine | null>(null)
 
@@ -510,7 +495,6 @@ onMounted(() => {
   fetchMachines()
 })
 
-// Fecha os modais ao navegar para outra rota
 onBeforeRouteLeave(() => {
   isModalOpen.value = false
   isEditModalOpen.value = false

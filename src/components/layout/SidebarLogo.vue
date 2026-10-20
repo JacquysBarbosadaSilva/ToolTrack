@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center gap-2.5 select-none transition-all duration-300" :class="{ 'justify-center': collapsed }">
-    <!-- Icon Container: Logo Oficial ToolTrack -->
+
     <div
       class="relative flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform"
     >
@@ -11,7 +11,6 @@
       />
     </div>
 
-    <!-- Brand Text -->
     <div v-if="!collapsed" class="flex flex-col min-w-0 transition-opacity duration-300">
       <div class="flex items-center gap-1.5">
         <span class="font-bold text-lg tracking-tight text-white font-['Plus_Jakarta_Sans',sans-serif]">

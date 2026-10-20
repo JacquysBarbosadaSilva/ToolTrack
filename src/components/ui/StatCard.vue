@@ -3,7 +3,7 @@
     class="bg-white rounded-lg p-5 shadow-xs flex flex-col justify-between transition-all"
     :class="[accentBorderClass]"
   >
-    <!-- Linha Superior: Label em Mono Uppercase à esquerda + Ícone no topo direito -->
+
     <div class="flex items-start justify-between gap-2">
       <span class="text-[10px] font-mono font-medium uppercase tracking-wider text-slate-600">
         {{ label }}
@@ -14,7 +14,6 @@
       </div>
     </div>
 
-    <!-- Linha Principal: Loading, Error ou Valor Grande + Delta -->
     <div v-if="loading" class="mt-4 flex items-baseline gap-2">
       <SkeletonBlock class="h-8 w-24 rounded" />
       <SkeletonBlock class="h-4 w-12 rounded" />
@@ -36,7 +35,6 @@
         {{ value }}
       </span>
 
-      <!-- Delta / Variação / Status ao lado do número como no Figma -->
       <span
         v-if="delta"
         class="text-xs font-semibold select-none"

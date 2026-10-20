@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- Mobile Backdrop Overlay -->
+
     <Transition
       enter-active-class="transition-opacity ease-linear duration-200"
       enter-from-class="opacity-0"
@@ -17,22 +17,21 @@
       />
     </Transition>
 
-    <!-- Sidebar Aside -->
     <aside
       :class="[
-        // Fixed positioning and dimension
+
         'fixed top-0 bottom-0 left-0 z-50 flex flex-col',
         'bg-[#1E293B] text-slate-200 border-r border-slate-700/60 shadow-xl select-none',
         'transition-all duration-300 ease-in-out',
-        // Responsive width
+
         isCollapsed ? 'lg:w-20' : 'lg:w-64',
         'w-64',
-        // Mobile visibility transform
+
         isOpenMobile ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       ]"
       aria-label="Barra Lateral de Navegação"
     >
-      <!-- Top Brand Header -->
+
       <div
         class="flex items-center justify-between h-16 px-4 border-b border-slate-700/60 shrink-0"
         :class="{ 'lg:justify-center': isCollapsed }"
@@ -45,7 +44,6 @@
           <SidebarLogo :collapsed="isCollapsed" />
         </RouterLink>
 
-        <!-- Mobile Close Button -->
         <button
           type="button"
           class="p-2 text-slate-400 rounded-lg lg:hidden hover:text-white hover:bg-slate-700/50 focus:outline-hidden focus:ring-2 focus:ring-blue-500"
@@ -56,7 +54,6 @@
         </button>
       </div>
 
-      <!-- Navigation Section -->
       <nav class="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-slate-700">
         <div v-if="!isCollapsed" class="px-3 pb-2 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
           Menu Principal
@@ -82,14 +79,13 @@
             :aria-current="isItemActive(item, isActive, isExactActive) ? 'page' : undefined"
             @click="(e) => { navigate(e); handleNavClick(); }"
           >
-            <!-- Active Indicator Pill on Left Edge -->
+
             <span
               v-if="isItemActive(item, isActive, isExactActive)"
               class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-blue-500 rounded-r-full shadow-sm shadow-blue-500/50 transition-all duration-200"
               aria-hidden="true"
             />
 
-            <!-- Icon -->
             <component
               :is="item.icon"
               :class="[
@@ -100,7 +96,6 @@
               ]"
             />
 
-            <!-- Item Label (Hidden when collapsed on desktop) -->
             <span
               v-if="!isCollapsed"
               class="truncate flex-1 tracking-wide"
@@ -108,7 +103,6 @@
               {{ item.label }}
             </span>
 
-            <!-- Badge (if any) -->
             <span
               v-if="!isCollapsed && item.badge"
               class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30"
@@ -116,7 +110,6 @@
               {{ item.badge }}
             </span>
 
-            <!-- Tooltip for collapsed desktop mode -->
             <div
               v-if="isCollapsed"
               class="absolute left-full ml-3 px-2.5 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-md shadow-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 border border-slate-700/80 hidden lg:block"
@@ -127,7 +120,6 @@
         </RouterLink>
       </nav>
 
-      <!-- Desktop Collapse Toggle Button -->
       <div class="hidden lg:flex px-3 py-2 border-t border-slate-700/40">
         <button
           type="button"
@@ -143,14 +135,13 @@
         </button>
       </div>
 
-      <!-- Footer Section: User Profile & Logout -->
       <div class="p-3 border-t border-slate-700/60 bg-slate-900/40 shrink-0">
-        <!-- User preview -->
+
         <div
           class="flex items-center gap-3 p-2 rounded-xl mb-1.5 bg-slate-800/40 hover:bg-slate-800/70 transition-colors"
           :class="{ 'justify-center': isCollapsed }"
         >
-          <!-- User Avatar -->
+
           <div class="relative flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600/30 text-blue-300 font-bold text-xs border border-blue-500/30 shrink-0">
             <span>{{ userInitials }}</span>
             <span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#1E293B]"></span>
@@ -166,7 +157,6 @@
           </div>
         </div>
 
-        <!-- Logout Button -->
         <button
           type="button"
           id="btn-sidebar-logout"
@@ -180,7 +170,6 @@
             Logout
           </span>
 
-          <!-- Tooltip for collapsed desktop mode -->
           <div
             v-if="isCollapsed"
             class="absolute left-full ml-3 px-2.5 py-1.5 bg-red-950 text-red-200 text-xs font-medium rounded-md shadow-lg pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 border border-red-800 hidden lg:block"
@@ -225,7 +214,6 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 
-// Navigation menu definition according to specifications
 const menuItems: NavigationItem[] = [
   {
     name: 'dashboard',
@@ -254,7 +242,6 @@ const menuItems: NavigationItem[] = [
   }
 ]
 
-// Determine if the item is active
 function isItemActive(item: NavigationItem, isActive: boolean, isExactActive: boolean): boolean {
   if (item.exact || item.to === '/') {
     return route.path === '/' || route.path === '/dashboard'
@@ -266,7 +253,6 @@ function handleNavClick() {
   emit('closeMobile')
 }
 
-// User Profile Information
 const userName = computed(() => {
   return authStore.user?.nome || authStore.user?.name || authStore.credentials?.name || 'Administrador'
 })
@@ -287,7 +273,6 @@ const userInitials = computed(() => {
   return name.slice(0, 2).toUpperCase()
 })
 
-// Logout handling
 function handleLogout() {
   emit('closeMobile')
   authStore.logout()

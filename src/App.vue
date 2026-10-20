@@ -2,7 +2,6 @@
   <div class="min-h-screen w-full font-sans antialiased bg-slate-50 text-slate-900">
     <RouterView />
 
-    <!-- Notificações Toast Globais (incluindo AWS_CREDENTIALS_EXPIRED) -->
     <div
       v-if="activeToasts.length"
       class="fixed top-5 right-5 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"

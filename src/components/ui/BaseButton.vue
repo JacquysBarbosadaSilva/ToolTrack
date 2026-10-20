@@ -10,13 +10,12 @@
     ]"
     @click="$emit('click', $event)"
   >
-    <!-- Spinner de Loading -->
+
     <Loader2
       v-if="loading"
       class="w-4 h-4 animate-spin shrink-0"
     />
 
-    <!-- Ícone Opcional -->
     <component
       :is="icon"
       v-else-if="icon"

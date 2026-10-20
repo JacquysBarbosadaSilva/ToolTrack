@@ -1,11 +1,3 @@
-/**
- * Tipagens e Modelos de Dados para o Dashboard ToolTrack
- * Preparadas para persistência e indexação direta no AWS DynamoDB
- * 
- * Exemplo de chaves NoSQL planejadas:
- * PK: INVENTORY#<id> | SK: METADATA#<sku>
- * GSI1PK: STATUS#<status> | GSI1SK: CATEGORIA#<categoria>
- */
 
 export type InventoryStatus = 'Normal' | 'Baixo' | 'Crítico'
 export type ShiftType = 'Manhã' | 'Tarde' | 'Noite'
@@ -43,8 +35,8 @@ export interface ShiftChartItem {
 }
 
 export interface InventoryItem {
-  id: string // Partition Key (PK) ex: ITEM#001
-  sku: string // Sort Key (SK) ex: SKU#TOR-8841
+  id: string
+  sku: string
   nome: string
   categoria: string
   setor: string
@@ -103,4 +95,3 @@ export interface DashboardResponse {
   turno: ShiftChartItem[]
   recentes?: RecentAccessedItem[]
 }
-
