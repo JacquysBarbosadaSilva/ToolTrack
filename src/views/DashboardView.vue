@@ -6,13 +6,13 @@
         Dashboard Overview
       </h1>
       <p class="text-sm text-slate-500 mt-1">
-        Real-time metrics for ToolTrack production facilities.
+        Métricas em tempo real para as unidades produtivas da ToolTrack.
       </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatCard
-        label="TOTAL INVENTORY ITEMS"
+        label="Armazenamento Total"
         :value="kpiItems.totalInventory.value"
         :delta="kpiItems.totalInventory.delta"
         accent="blue"
@@ -23,7 +23,7 @@
       />
 
       <StatCard
-        label="LOW STOCK ALERTS"
+        label="Alerta de baixo estoque"
         :value="kpiItems.lowStock.value"
         :delta="kpiItems.lowStock.delta"
         accent="red"
@@ -34,7 +34,7 @@
       />
 
       <StatCard
-        label="ACTIVE MACHINES"
+        label="Maquinas ativas"
         :value="kpiItems.activeMachines.value"
         :delta="kpiItems.activeMachines.delta"
         accent="green"
@@ -45,7 +45,7 @@
       />
 
       <StatCard
-        label="MAINTENANCE TASKS"
+        label="Tarefas de manutenção"
         :value="kpiItems.maintenanceTasks.value"
         :delta="kpiItems.maintenanceTasks.delta"
         accent="dark"
