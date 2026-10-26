@@ -15,6 +15,7 @@ ToolTrack: controle de estoque e produção de ferramentas de usinagem.
 - [AWS Academy](#aws-academy)
 - [Banco de Dados](#banco-de-dados)
 - [Como Executar](#como-executar)
+- [Simulação em Tempo Real](#simulação-em-tempo-real)
 - [Scripts Disponíveis](#scripts-disponíveis)
 - [Usuário Administrador Inicial](#usuário-administrador-inicial)
 - [API](#api)
@@ -319,12 +320,53 @@ Para garantir o funcionamento integrado, inicie sempre o backend antes do fronte
    ```
    A interface web estará disponível em `http://localhost:5173`.
 
+## Simulação em Tempo Real
+
+O ToolTrack dispõe de um script dedicado (`backend/src/scripts/simulate.ts`) desenvolvido para simular a operação contínua de um chão de fábrica, inserindo e atualizando dados reais no Amazon DynamoDB.
+
+### O que o simulador executa:
+- **Apontamentos de Produção (`tooltrack-production`)**: Lançamentos periódicos de peças usinadas por turno (Manhã, Tarde, Noite), setor e máquina, atualizando em tempo real o gráfico de volume e produção.
+- **Desgaste e Consumo de Ferramentas (`tooltrack-products`)**: Redução gradativa do saldo de pastilhas com recálculo imediato de status (`Normal`, `Baixo`, `Crítico`), disparando alertas no painel.
+- **Recebimento de Lotes de Reposição (`tooltrack-products`)**: Simulação de chegada de insumos quando o estoque atinge faixas críticas, recompondo o saldo.
+- **Telemetria e Estado das Máquinas (`tooltrack-machines`)**: Atualização dinâmica da eficiência global (OEE %), produção hora e alternância de status operacional (`ativa`, `parada`, `manutencao`).
+- **Tarefas de Manutenção Preventiva (`tooltrack-maintenance`)**: Abertura e conclusão de ordens de serviço preventivas associadas a máquinas.
+
+### Como Executar o Simulador:
+
+Abra um terminal adicional (com o backend e o frontend em execução):
+
+```bash
+# Executar a partir da raiz do repositório:
+npm run simulate
+
+# Ou diretamente dentro da pasta backend:
+cd backend
+npm run simulate
+```
+
+### Opções e Parâmetros:
+
+| Parâmetro | Padrão | Descrição | Exemplo de Uso |
+|---|---|---|---|
+| `--interval <ms>` | `3000` | Define a frequência (em milissegundos) dos eventos de simulação | `npm run simulate -- --interval 2000` |
+| `--iterations <n>` | `infinito` | Limita o total de ciclos executados antes de encerrar automaticamente | `npm run simulate -- --iterations 60` |
+| `--help` | - | Exibe as instruções de uso e parâmetros aceitos | `npm run simulate -- --help` |
+
+> [!TIP]
+> **Como acompanhar a atualização em tempo real no navegador:**  
+> 1. Mantenha o navegador aberto na tela do **Dashboard** (`http://localhost:5173/`) ou em **Produção** (`http://localhost:5173/producao`).  
+> 2. Ao lado, inicie o simulador no terminal com `npm run simulate`.  
+> 3. Observe os contadores de KPI (**Armazenamento Total**, **Alerta de baixo estoque**, **Máquinas ativas** e **Tarefas de manutenção**), os gráficos em SVG e as linhas da tabela de ferramentas atualizando de forma suave e automática sem necessidade de recarregar a página manualmente (F5).  
+> 4. Para interromper a simulação, pressione `Ctrl + C` no terminal do simulador.
+
 ## Scripts Disponíveis
 
 ### Raiz do Projeto (package.json)
 | Script | Comando | Descrição |
 |---|---|---|
-| `dev` | `vite` | Inicia o servidor local de desenvolvimento do Vite com recarregamento a quente |
+| `dev` | `vite` | Inicia o servidor local de desenvolvimento do frontend |
+| `backend` | `npm --prefix backend run dev` | Inicia o servidor backend Express diretamente a partir da raiz |
+| `simulate` | `npm --prefix backend run simulate` | Executa o simulador de produção e estoque em tempo real |
 | `build` | `vite build` | Compila a aplicação e gera o pacote estático otimizado na pasta dist/ |
 | `preview` | `vite preview` | Executa um servidor HTTP local para inspecionar os arquivos gerados pelo build |
 
@@ -333,6 +375,7 @@ Para garantir o funcionamento integrado, inicie sempre o backend antes do fronte
 |---|---|---|
 | `dev` | `tsx watch src/server.ts` | Executa o backend com reinicialização automática a cada alteração no código |
 | `start` | `tsx src/server.ts` | Inicia a execução direta do servidor backend sem observador de alterações |
+| `simulate` | `tsx src/scripts/simulate.ts` | Executa o simulador contínuo de produção, estoque e telemetria |
 | `tables:create` | `tsx src/scripts/create-tables.ts` | Cria no DynamoDB todas as tabelas e índices ausentes definidos no projeto |
 | `seed` | `tsx src/scripts/seed.ts` | Insere os dados iniciais de administrador e lookups (suporta flag --demo) |
 | `aws:check` | `tsx -e "import('./src/config/aws').then(m=>m.assertAwsConnection()).then(()=>console.log('AWS OK'))"` | Verifica a validade das credenciais da AWS configuradas no arquivo backend/.env |

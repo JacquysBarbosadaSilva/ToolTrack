@@ -121,10 +121,12 @@ export const useDashboardStore = defineStore('dashboard', () => {
     }
   }
 
-  async function fetchDashboardData(): Promise<void> {
-    isLoading.value = true
-    error.value = null
-    tableError.value = null
+  async function fetchDashboardData(silent: boolean = false): Promise<void> {
+    if (!silent) {
+      isLoading.value = true
+      error.value = null
+      tableError.value = null
+    }
 
     const isoDate = formatToIsoDate(filters.data)
 
@@ -169,9 +171,15 @@ export const useDashboardStore = defineStore('dashboard', () => {
         }))
       }
     } catch (err: any) {
-      error.value = err?.message || 'Falha ao buscar dados do Dashboard'
+      if (!silent) {
+        error.value = err?.message || 'Falha ao buscar dados do Dashboard'
+      } else {
+        console.warn('Erro ao atualizar dados em background:', err?.message || err)
+      }
     } finally {
-      isLoading.value = false
+      if (!silent) {
+        isLoading.value = false
+      }
     }
   }
 

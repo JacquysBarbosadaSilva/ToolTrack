@@ -355,7 +355,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { Search, AlertTriangle, X } from 'lucide-vue-next'
@@ -491,11 +491,36 @@ async function handleExecuteDeleteMachine() {
   }
 }
 
+let pollInterval: ReturnType<typeof setInterval> | null = null
+
 onMounted(() => {
   fetchMachines()
+  pollInterval = setInterval(() => {
+    if (
+      document.visibilityState === 'visible' &&
+      !isSaving.value &&
+      !isDeleting.value &&
+      !isModalOpen.value &&
+      !isEditModalOpen.value &&
+      !isDeleteModalOpen.value
+    ) {
+      producaoStore.fetchMachines(true)
+    }
+  }, 3500)
+})
+
+onUnmounted(() => {
+  if (pollInterval) {
+    clearInterval(pollInterval)
+    pollInterval = null
+  }
 })
 
 onBeforeRouteLeave(() => {
+  if (pollInterval) {
+    clearInterval(pollInterval)
+    pollInterval = null
+  }
   isModalOpen.value = false
   isEditModalOpen.value = false
   isDeleteModalOpen.value = false

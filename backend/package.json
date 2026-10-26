@@ -8,6 +8,7 @@
         "start": "tsx src/server.ts",
         "tables:create": "tsx src/scripts/create-tables.ts",
         "seed": "tsx src/scripts/seed.ts",
+        "simulate": "tsx src/scripts/simulate.ts",
         "aws:check": "tsx -e \"import('./src/config/aws').then(m=>m.assertAwsConnection()).then(()=>console.log('AWS OK'))\""
     },
     "dependencies": {

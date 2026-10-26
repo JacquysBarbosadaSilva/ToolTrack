@@ -183,7 +183,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import {
   Package,
@@ -347,7 +347,21 @@ function handlePrint() {
   window.print()
 }
 
+let pollInterval: ReturnType<typeof setInterval> | null = null
+
 onMounted(() => {
   fetchDashboardData()
+  pollInterval = setInterval(() => {
+    if (document.visibilityState === 'visible' && !isFiltering.value) {
+      dashboardStore.fetchDashboardData(true)
+    }
+  }, 3000)
+})
+
+onUnmounted(() => {
+  if (pollInterval) {
+    clearInterval(pollInterval)
+    pollInterval = null
+  }
 })
 </script>

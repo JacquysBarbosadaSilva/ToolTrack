@@ -26,18 +26,26 @@ export const useProducaoStore = defineStore('producao', () => {
     })
   })
 
-  async function fetchMachines(): Promise<void> {
-    isLoading.value = true
-    error.value = null
+  async function fetchMachines(silent: boolean = false): Promise<void> {
+    if (!silent) {
+      isLoading.value = true
+      error.value = null
+    }
     try {
       const items = await machinesService.listMachines({
         search: searchQuery.value || undefined
       })
       machines.value = items
     } catch (err: any) {
-      error.value = err?.message || 'Erro ao carregar máquinas do DynamoDB'
+      if (!silent) {
+        error.value = err?.message || 'Erro ao carregar máquinas do DynamoDB'
+      } else {
+        console.warn('Erro ao atualizar máquinas em background:', err?.message || err)
+      }
     } finally {
-      isLoading.value = false
+      if (!silent) {
+        isLoading.value = false
+      }
     }
   }
 
