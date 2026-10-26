@@ -78,6 +78,14 @@ router.afterEach((to) => {
   if (to.meta.title) {
     document.title = String(to.meta.title)
   }
+  let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement | null
+  if (!link) {
+    link = document.createElement('link')
+    link.rel = 'icon'
+    document.head.appendChild(link)
+  }
+  link.type = 'image/png'
+  link.href = '/logo-borda-branca.png'
 })
 
 export default router
